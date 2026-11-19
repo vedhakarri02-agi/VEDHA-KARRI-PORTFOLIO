@@ -12,24 +12,175 @@
 }
 
 @theme {
-  --color-ink-950: #030704;
-  --color-ink-900: #061109;
-  --color-ink-850: #0a180f;
-  --color-ink-800: #0f2416;
-  --color-ink-700: #163621;
-  --color-fg: #f4fbf6;
-  --color-muted: #9bb5a3;
-  --color-subtle: #61826b;
-  --color-accent: #10b981;
-  --color-accent-strong: #059669;
-  --color-accent-soft: #34d399;
-  --color-accent-glow: #6ee7b7;
-  --color-harvest: #f59e0b;
-  --color-harvest-glow: #fbbf24;
-  --color-line: rgb(255 255 255 / 0.08);
-  --color-line-strong: rgb(52 211 153 / 0.25);
+  --color-ink-950: var(--color-ink-950, #030704);
+  --color-ink-900: var(--color-ink-900, #061109);
+  --color-ink-850: var(--color-ink-850, #0a180f);
+  --color-ink-800: var(--color-ink-800, #0f2416);
+  --color-ink-700: var(--color-ink-700, #163621);
+  --color-fg: var(--color-fg, #f4fbf6);
+  --color-muted: var(--color-muted, #9bb5a3);
+  --color-subtle: var(--color-subtle, #61826b);
+  --color-accent: var(--color-accent, #10b981);
+  --color-accent-strong: var(--color-accent-strong, #059669);
+  --color-accent-soft: var(--color-accent-soft, #34d399);
+  --color-accent-glow: var(--color-accent-glow, #6ee7b7);
+  --color-harvest: var(--color-harvest, #f59e0b);
+  --color-harvest-glow: var(--color-harvest-glow, #fbbf24);
+  --color-line: var(--color-line, rgb(255 255 255 / 0.08));
+  --color-line-strong: var(--color-line-strong, rgb(52 211 153 / 0.25));
   --color-danger: #f87171;
   --color-warning: #fbbf24;
+}
+
+/* ------------------------------------------------------------------
+   Color Theme Variants
+   Switchable via [data-theme] on html/body
+   ------------------------------------------------------------------ */
+@layer base {
+  :root,
+  [data-theme='emerald'] {
+    --color-ink-950: #030704;
+    --color-ink-900: #061109;
+    --color-ink-850: #0a180f;
+    --color-ink-800: #0f2416;
+    --color-ink-700: #163621;
+    --color-fg: #f4fbf6;
+    --color-muted: #9bb5a3;
+    --color-subtle: #61826b;
+    --color-accent: #10b981;
+    --color-accent-strong: #059669;
+    --color-accent-soft: #34d399;
+    --color-accent-glow: #6ee7b7;
+    --color-harvest: #f59e0b;
+    --color-harvest-glow: #fbbf24;
+    --color-line: rgb(255 255 255 / 0.08);
+    --color-line-strong: rgb(52 211 153 / 0.25);
+    --bg-glow-1: rgb(16 185 129 / 0.18);
+    --bg-glow-2: rgb(52 211 153 / 0.08);
+    --bg-glow-3: rgb(245 158 11 / 0.05);
+    --bg-glow-4: rgb(5 150 105 / 0.12);
+    --bg-grid-dot: rgb(52 211 153 / 0.07);
+  }
+
+  [data-theme='amber'] {
+    --color-ink-950: #090602;
+    --color-ink-900: #140e05;
+    --color-ink-850: #1c1407;
+    --color-ink-800: #2a1d0a;
+    --color-ink-700: #3e2b0e;
+    --color-fg: #fefcf6;
+    --color-muted: #d5c39e;
+    --color-subtle: #988358;
+    --color-accent: #f59e0b;
+    --color-accent-strong: #d97706;
+    --color-accent-soft: #fbbf24;
+    --color-accent-glow: #fde68a;
+    --color-harvest: #10b981;
+    --color-harvest-glow: #34d399;
+    --color-line: rgb(255 255 255 / 0.08);
+    --color-line-strong: rgb(251 191 36 / 0.25);
+    --bg-glow-1: rgb(245 158 11 / 0.18);
+    --bg-glow-2: rgb(251 191 36 / 0.09);
+    --bg-glow-3: rgb(16 185 129 / 0.06);
+    --bg-glow-4: rgb(217 119 6 / 0.13);
+    --bg-grid-dot: rgb(251 191 36 / 0.07);
+  }
+
+  [data-theme='ocean'] {
+    --color-ink-950: #02070c;
+    --color-ink-900: #050f19;
+    --color-ink-850: #081624;
+    --color-ink-800: #0c2033;
+    --color-ink-700: #12304d;
+    --color-fg: #f4f9fd;
+    --color-muted: #9bc0da;
+    --color-subtle: #5f89a8;
+    --color-accent: #0ea5e9;
+    --color-accent-strong: #0284c7;
+    --color-accent-soft: #38bdf8;
+    --color-accent-glow: #7dd3fc;
+    --color-harvest: #f59e0b;
+    --color-harvest-glow: #fbbf24;
+    --color-line: rgb(255 255 255 / 0.08);
+    --color-line-strong: rgb(56 189 248 / 0.25);
+    --bg-glow-1: rgb(14 165 233 / 0.18);
+    --bg-glow-2: rgb(56 189 248 / 0.09);
+    --bg-glow-3: rgb(16 185 129 / 0.05);
+    --bg-glow-4: rgb(2 132 199 / 0.13);
+    --bg-grid-dot: rgb(56 189 248 / 0.07);
+  }
+
+  [data-theme='amethyst'] {
+    --color-ink-950: #06020b;
+    --color-ink-900: #0d0517;
+    --color-ink-850: #140823;
+    --color-ink-800: #1d0c32;
+    --color-ink-700: #2d134d;
+    --color-fg: #faf5ff;
+    --color-muted: #c5b6fc;
+    --color-subtle: #8a65f0;
+    --color-accent: #a855f7;
+    --color-accent-strong: #9333ea;
+    --color-accent-soft: #c084fc;
+    --color-accent-glow: #e9d5ff;
+    --color-harvest: #fbbf24;
+    --color-harvest-glow: #fde68a;
+    --color-line: rgb(255 255 255 / 0.08);
+    --color-line-strong: rgb(192 132 252 / 0.25);
+    --bg-glow-1: rgb(168 85 247 / 0.18);
+    --bg-glow-2: rgb(192 132 252 / 0.09);
+    --bg-glow-3: rgb(52 211 153 / 0.05);
+    --bg-glow-4: rgb(147 51 234 / 0.13);
+    --bg-grid-dot: rgb(192 132 252 / 0.07);
+  }
+
+  [data-theme='rose'] {
+    --color-ink-950: #0b0205;
+    --color-ink-900: #17050b;
+    --color-ink-850: #220710;
+    --color-ink-800: #320b18;
+    --color-ink-700: #4c1125;
+    --color-fg: #fff1f2;
+    --color-muted: #fda4af;
+    --color-subtle: #e11d48;
+    --color-accent: #f43f5e;
+    --color-accent-strong: #e11d48;
+    --color-accent-soft: #fb7185;
+    --color-accent-glow: #fecdd3;
+    --color-harvest: #fbbf24;
+    --color-harvest-glow: #fde68a;
+    --color-line: rgb(255 255 255 / 0.08);
+    --color-line-strong: rgb(251 113 133 / 0.25);
+    --bg-glow-1: rgb(244 63 94 / 0.18);
+    --bg-glow-2: rgb(251 113 133 / 0.09);
+    --bg-glow-3: rgb(251 191 36 / 0.05);
+    --bg-glow-4: rgb(225 29 72 / 0.13);
+    --bg-grid-dot: rgb(251 113 133 / 0.07);
+  }
+
+  [data-theme='titanium'] {
+    --color-ink-950: #070809;
+    --color-ink-900: #0e1013;
+    --color-ink-850: #14171b;
+    --color-ink-800: #1e2228;
+    --color-ink-700: #2b303a;
+    --color-fg: #f8fafc;
+    --color-muted: #cbd5e1;
+    --color-subtle: #64748b;
+    --color-accent: #94a3b8;
+    --color-accent-strong: #64748b;
+    --color-accent-soft: #cbd5e1;
+    --color-accent-glow: #f1f5f9;
+    --color-harvest: #38bdf8;
+    --color-harvest-glow: #7dd3fc;
+    --color-line: rgb(255 255 255 / 0.08);
+    --color-line-strong: rgb(203 213 225 / 0.25);
+    --bg-glow-1: rgb(148 163 184 / 0.16);
+    --bg-glow-2: rgb(203 213 225 / 0.08);
+    --bg-glow-3: rgb(56 189 248 / 0.05);
+    --bg-glow-4: rgb(100 116 139 / 0.12);
+    --bg-grid-dot: rgb(203 213 225 / 0.06);
+  }
 }
 
 /* ------------------------------------------------------------------
@@ -97,11 +248,11 @@
     z-index: -1;
     pointer-events: none;
     background-image:
-      radial-gradient(ellipse 90% 60% at 50% -15%, rgb(16 185 129 / 0.18), transparent 70%),
-      radial-gradient(ellipse 60% 40% at 100% 30%, rgb(52 211 153 / 0.08), transparent 70%),
-      radial-gradient(ellipse 50% 35% at 0% 70%, rgb(245 158 11 / 0.05), transparent 70%),
-      radial-gradient(ellipse 70% 50% at 50% 100%, rgb(5 150 105 / 0.12), transparent 70%),
-      radial-gradient(circle, rgb(52 211 153 / 0.07) 1px, transparent 1px);
+      radial-gradient(ellipse 90% 60% at 50% -15%, var(--bg-glow-1, rgb(16 185 129 / 0.18)), transparent 70%),
+      radial-gradient(ellipse 60% 40% at 100% 30%, var(--bg-glow-2, rgb(52 211 153 / 0.08)), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 0% 70%, var(--bg-glow-3, rgb(245 158 11 / 0.05)), transparent 70%),
+      radial-gradient(ellipse 70% 50% at 50% 100%, var(--bg-glow-4, rgb(5 150 105 / 0.12)), transparent 70%),
+      radial-gradient(circle, var(--bg-grid-dot, rgb(52 211 153 / 0.07)) 1px, transparent 1px);
     background-size:
       100% 100%,
       100% 100%,

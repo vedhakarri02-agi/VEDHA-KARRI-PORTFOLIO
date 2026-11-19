@@ -26,12 +26,16 @@ export type CustomModuleItem = {
 
 export type FieldVisibility = Record<string, boolean>;
 
+export type ThemeColor = 'emerald' | 'amber' | 'ocean' | 'amethyst' | 'rose' | 'titanium';
+
 export type SectionSetting = {
   key: SectionKey;
   visible: boolean;
   /** Optional custom heading/intro; the defaults in site.ts are used when empty. */
   title?: string;
   intro?: string;
+  /** Optional theme override */
+  theme?: ThemeColor;
   /** Custom items / achievements for custom or dedicated modules */
   items?: CustomModuleItem[];
   /** Field visibility switches within sections (e.g. Candidate, GPA, Location, CV) */
@@ -62,6 +66,7 @@ export type Profile = {
 export type SiteSettings = {
   id: number;
   sections: SectionSetting[];
+  theme_color?: ThemeColor;
   /** Bumped by a database trigger on every content change; the site listens to it for live updates. */
   content_version: number;
 };

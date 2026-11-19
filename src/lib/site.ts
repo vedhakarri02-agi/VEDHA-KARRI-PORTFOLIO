@@ -1,4 +1,25 @@
-import type { SectionKey, SectionSetting } from './types';
+import type { SectionKey, SectionSetting, ThemeColor } from './types';
+
+export const THEMES: { id: ThemeColor; label: string; accent: string; glow: string; desc: string }[] = [
+  { id: 'emerald', label: 'Emerald & Mint', accent: '#10b981', glow: '#34d399', desc: 'Lush botanical agritech & chlorophyll glow' },
+  { id: 'amber', label: 'Amber & Harvest', accent: '#f59e0b', glow: '#fbbf24', desc: 'Golden grain fields & solar illumination' },
+  { id: 'ocean', label: 'Ocean & Azure', accent: '#0ea5e9', glow: '#38bdf8', desc: 'Hydroponics, irrigation & precision aqua' },
+  { id: 'amethyst', label: 'Amethyst & Violet', accent: '#a855f7', glow: '#c084fc', desc: 'Plant biochemistry & royal innovation' },
+  { id: 'rose', label: 'Rose & Coral', accent: '#f43f5e', glow: '#fb7185', desc: 'Horticulture, floral botany & vibrant bloom' },
+  { id: 'titanium', label: 'Titanium Studio', accent: '#94a3b8', glow: '#cbd5e1', desc: 'Minimalist monochrome design studio' },
+];
+
+export function extractThemeColor(sections: SectionSetting[]): ThemeColor {
+  const themeItem = sections.find((s) => s.key === '__theme');
+  if (themeItem?.title && ['emerald', 'amber', 'ocean', 'amethyst', 'rose', 'titanium'].includes(themeItem.title)) {
+    return themeItem.title as ThemeColor;
+  }
+  const firstWithTheme = sections.find((s) => s.theme);
+  if (firstWithTheme?.theme && ['emerald', 'amber', 'ocean', 'amethyst', 'rose', 'titanium'].includes(firstWithTheme.theme)) {
+    return firstWithTheme.theme;
+  }
+  return 'emerald';
+}
 
 /** Short names used in the navigation and the admin. */
 export const SECTION_LABELS: Record<string, string> = {
@@ -61,6 +82,7 @@ export function normalizeSections(raw: unknown): SectionSetting[] {
       visible: item.visible !== false,
       title: typeof item.title === 'string' ? item.title : '',
       intro: typeof item.intro === 'string' ? item.intro : '',
+      theme: typeof item.theme === 'string' && ['emerald', 'amber', 'ocean', 'amethyst', 'rose', 'titanium'].includes(item.theme) ? (item.theme as ThemeColor) : undefined,
       items: Array.isArray(item.items) ? item.items : undefined,
       fields_visibility: item.fields_visibility && typeof item.fields_visibility === 'object' ? item.fields_visibility : undefined,
       custom_pillars: Array.isArray(item.custom_pillars) ? item.custom_pillars : undefined,

@@ -321,6 +321,7 @@ export const STARTER_CONTENT: Portfolio = {
   settings: {
     id: 1,
     sections: DEFAULT_SECTIONS,
+    theme_color: 'emerald',
     content_version: 1,
   },
   experiences,

@@ -1,6 +1,6 @@
 import { cache } from 'react';
 import { STARTER_CONTENT } from './seed-content';
-import { normalizeSections } from './site';
+import { extractThemeColor, normalizeSections } from './site';
 import { createServerSupabase } from './supabase/server';
 import type {
   Certification,
@@ -99,6 +99,7 @@ export const getPortfolio = cache(async (): Promise<PortfolioResult> => {
         settings: {
           id: 1,
           sections: normalizeSections(siteSettings?.sections),
+          theme_color: extractThemeColor(normalizeSections(siteSettings?.sections)),
           content_version: Number(siteSettings?.content_version ?? 0),
         },
         experiences: withArrays(experiences.data as Experience[], ['bullets', 'skills']),

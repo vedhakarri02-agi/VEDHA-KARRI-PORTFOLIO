@@ -3,8 +3,10 @@
 import {
   ArrowDown,
   ArrowUp,
+  Check,
   ChevronDown,
   Loader2,
+  Palette,
   Plus,
   Save,
   Trash2,
@@ -13,8 +15,8 @@ import {
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { fetchSettings, saveSections } from '@/lib/admin-api';
-import { SECTION_DEFAULTS, SECTION_LABELS, sectionLabel } from '@/lib/site';
-import type { CustomModuleItem, SectionSetting } from '@/lib/types';
+import { SECTION_DEFAULTS, SECTION_LABELS, sectionLabel, THEMES, extractThemeColor } from '@/lib/site';
+import type { CustomModuleItem, SectionSetting, ThemeColor } from '@/lib/types';
 import { useAdmin, useAdminQuery, useUnsavedChanges } from './AdminContext';
 import { useToast } from './Toast';
 import { PageHeader, QueryStatus } from './ui';
@@ -47,6 +49,7 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
   const [baseline, setBaseline] = useState<SectionSetting[]>(initial);
   const [open, setOpen] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState<ThemeColor>(() => extractThemeColor(initial));
   const [showAddModal, setShowAddModal] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newKey, setNewKey] = useState('');
@@ -54,6 +57,22 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
 
   const dirty = useMemo(() => JSON.stringify(sections) !== JSON.stringify(baseline), [sections, baseline]);
   useUnsavedChanges(dirty);
+
+  const handleThemeChange = (themeId: ThemeColor) => {
+    setCurrentTheme(themeId);
+    document.documentElement.dataset.theme = themeId;
+    try {
+      localStorage.setItem('portfolio-theme', themeId);
+    } catch {}
+    setSections((list) => {
+      const updated = list.map((s, idx) => (idx === 0 ? { ...s, theme: themeId } : s));
+      const hasThemeItem = updated.some((s) => s.key === '__theme');
+      if (hasThemeItem) {
+        return updated.map((s) => (s.key === '__theme' ? { ...s, title: themeId } : s));
+      }
+      return [{ key: '__theme', title: themeId, visible: false }, ...updated];
+    });
+  };
 
   const update = (index: number, patch: Partial<SectionSetting>) =>
     setSections((list) => list.map((s, i) => (i === index ? { ...s, ...patch } : s)));
@@ -107,10 +126,11 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
   const save = async () => {
     setSaving(true);
     try {
-      const cleaned = sections.map((s) => ({
+      const cleaned = sections.map((s, idx) => ({
         ...s,
         title: s.title?.trim() ?? '',
         intro: s.intro?.trim() ?? '',
+        theme: idx === 0 ? currentTheme : s.theme,
         items: s.items ?? [],
         fields_visibility: s.fields_visibility ?? {},
         custom_pillars: s.custom_pillars ?? [],
@@ -130,7 +150,7 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
     <div className="grid gap-6">
       <PageHeader
         title="Sections & Modules"
-        description="Choose which homepage sections appear, add custom modules (like Achievements or Honors), and toggle the visibility of individual fields and items."
+        description="Choose which homepage sections appear, select your portfolio color atmosphere, add custom modules, and toggle field visibility."
         action={
           <div className="flex items-center gap-2">
             <button
@@ -148,6 +168,53 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
           </div>
         }
       />
+
+      {/* Portfolio Color Atmosphere Card */}
+      <div className="rounded-2xl border border-white/[0.08] bg-ink-900/80 p-5 sm:p-6 backdrop-blur-xl shadow-lg">
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-line">
+          <div className="flex items-center gap-3">
+            <span className="grid size-10 place-items-center rounded-xl border border-accent/30 bg-accent/10 text-accent-soft">
+              <Palette size={20} />
+            </span>
+            <div>
+              <h3 className="font-display text-base font-semibold text-fg">Portfolio Color Atmosphere</h3>
+              <p className="text-xs text-muted">Select the primary radiant color palette and lighting for your entire portfolio.</p>
+            </div>
+          </div>
+          <span className="rounded-full border border-accent/30 bg-accent/10 px-3 py-1 font-mono text-xs font-semibold text-accent-glow capitalize">
+            {THEMES.find((t) => t.id === currentTheme)?.label}
+          </span>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {THEMES.map((theme) => {
+            const isSelected = currentTheme === theme.id;
+            return (
+              <button
+                key={theme.id}
+                type="button"
+                onClick={() => handleThemeChange(theme.id)}
+                className={`group flex flex-col items-center gap-2.5 rounded-xl border p-3.5 text-center transition-all cursor-pointer ${
+                  isSelected
+                    ? 'border-accent bg-accent/10 shadow-[0_0_20px_rgba(16,185,129,0.2)]'
+                    : 'border-line bg-ink-950/60 hover:border-white/20 hover:bg-white/[0.03]'
+                }`}
+              >
+                <div
+                  className="size-7 rounded-full border-2 border-white/20 transition-transform group-hover:scale-110 flex items-center justify-center shadow-sm"
+                  style={{ background: theme.accent, boxShadow: `0 0 12px ${theme.glow}80` }}
+                >
+                  {isSelected && <Check size={14} className="text-white drop-shadow" />}
+                </div>
+                <div>
+                  <p className="font-medium text-xs text-fg">{theme.label.split('&')[0].trim()}</p>
+                  <p className="text-[10px] text-subtle leading-tight mt-0.5">{theme.desc.split('&')[0]}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       {/* Add New Section Modal / Dialog */}
       {showAddModal && (

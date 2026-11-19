@@ -12,6 +12,7 @@ import {
   Loader2,
   LogOut,
   Menu,
+  Palette,
   PanelRight,
   Rows3,
   Trophy,
@@ -25,6 +26,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { countUnread } from '@/lib/admin-api';
+import { THEMES } from '@/lib/site';
+import type { ThemeColor } from '@/lib/types';
 import { getBrowserSupabase } from '@/lib/supabase/browser';
 import { AdminContext } from './AdminContext';
 import { PreviewPane } from './PreviewPane';
@@ -177,6 +180,29 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       <p className="truncate px-3 pb-2 text-xs text-subtle" title={email}>
         Signed in as <span className="text-muted">{email}</span>
       </p>
+      <div className="flex items-center justify-between px-3 py-2 text-xs text-muted">
+        <span className="flex items-center gap-1.5 font-medium">
+          <Palette size={14} className="text-accent-soft" /> Theme
+        </span>
+        <div className="flex items-center gap-1.5">
+          {THEMES.map((t) => (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => {
+                document.documentElement.dataset.theme = t.id;
+                try {
+                  localStorage.setItem('portfolio-theme', t.id);
+                } catch {}
+              }}
+              className="size-3.5 rounded-full border border-white/20 transition-transform hover:scale-125"
+              style={{ background: t.accent }}
+              title={t.label}
+              aria-label={`Switch to ${t.label}`}
+            />
+          ))}
+        </div>
+      </div>
       <button
         type="button"
         onClick={togglePreview}
@@ -200,7 +226,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   const brand = (
     <Link href="/admin" onClick={confirmLeave} className="flex items-center gap-3 px-3">
-      <span className="grid size-8 place-items-center rounded-lg border border-accent/40 bg-accent/10 font-mono text-xs font-semibold text-accent-glow">BT</span>
+      <span className="grid size-8 place-items-center rounded-lg border border-accent/40 bg-accent/10 font-mono text-xs font-semibold text-accent-glow">VK</span>
       <span className="font-display font-semibold">
         Portfolio <span className="text-subtle">Admin</span>
       </span>
