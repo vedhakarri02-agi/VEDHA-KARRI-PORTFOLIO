@@ -1,4 +1,4 @@
-import { ArrowDown, Download, Mail, MapPin, Sprout, Award, BookOpen } from 'lucide-react';
+import { ArrowDown, Download, Mail, MapPin, Sprout } from 'lucide-react';
 import Image from 'next/image';
 import type { Stat } from '@/lib/content';
 import { initials } from '@/lib/format';
@@ -6,7 +6,6 @@ import type { Portfolio, Profile } from '@/lib/types';
 import { BlueprintArt } from './BlueprintArt';
 import { GitHubIcon, LinkedInIcon } from './icons';
 import { VantaHeroBackground } from './VantaHeroBackground';
-import { AgritechTelemetry } from './AgritechTelemetry';
 import { BlurText } from './BlurText';
 
 type Props = {
@@ -20,19 +19,20 @@ type Props = {
 
 export function Hero({ profile, stats, primaryHref, contactHref, portfolio }: Props) {
   const [first, ...rest] = profile.full_name.trim().split(/\s+/);
+  const disciplineTag = portfolio?.education?.[0]?.qualification || profile.headline.split('·')[0]?.trim();
 
   return (
-    <section aria-label="Introduction" className="relative min-h-[92vh] pt-36 pb-20 sm:pt-48 sm:pb-32 overflow-hidden flex flex-col justify-center">
+    <section aria-label="Introduction" className="relative min-h-[85vh] pt-32 pb-16 sm:pt-40 sm:pb-24 overflow-hidden flex flex-col justify-center">
       {/* 3D Interactive WebGL Vanta Background */}
       <VantaHeroBackground />
 
-      <div className="container-x relative z-10 grid grid-cols-1 items-center gap-16 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
+      <div className="container-x relative z-10 grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
         <div>
           {/* Top Status & Accreditation Pills */}
           <div className="flex flex-wrap items-center gap-2.5">
             {profile.open_to_work && (
               <span className="chip border-emerald-500/35 bg-emerald-500/15 text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-                <span className="pulse-dot bg-emerald-400" /> Open for Agronomy Research & Fieldwork
+                <span className="pulse-dot bg-emerald-400" /> Available for Opportunities
               </span>
             )}
             {profile.location && (
@@ -40,14 +40,16 @@ export function Hero({ profile, stats, primaryHref, contactHref, portfolio }: Pr
                 <MapPin size={14} className="text-emerald-400" /> {profile.location}
               </span>
             )}
-            <span className="chip border-white/[0.08] bg-white/[0.03] text-muted hidden sm:inline-flex">
-              <Sprout size={14} className="text-emerald-400" />
-              {portfolio?.education?.[0]?.qualification || profile.headline.split('·')[0]?.trim() || 'Agricultural Scholar'}
-            </span>
+            {disciplineTag && (
+              <span className="chip border-white/[0.08] bg-white/[0.03] text-muted hidden sm:inline-flex">
+                <Sprout size={14} className="text-emerald-400" />
+                {disciplineTag}
+              </span>
+            )}
           </div>
 
           {/* Grand Name Display */}
-          <h1 className="mt-8 font-display text-5xl leading-[1.05] font-bold tracking-tight sm:text-7xl lg:text-8xl">
+          <h1 className="mt-8 font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl leading-[1.05] font-bold tracking-tight">
             <span className="text-fg">{first}</span>{' '}
             <span className="text-gradient">{rest.join(' ')}</span>
           </h1>
@@ -70,7 +72,7 @@ export function Hero({ profile, stats, primaryHref, contactHref, portfolio }: Pr
           <div className="mt-10 flex flex-wrap items-center gap-4">
             {primaryHref && (
               <a href={primaryHref} className="btn btn-primary group">
-                Explore Fieldwork & Research{' '}
+                Explore Projects & Research{' '}
                 <ArrowDown size={16} className="transition-transform duration-200 group-hover:translate-y-1" />
               </a>
             )}
@@ -131,14 +133,9 @@ export function Hero({ profile, stats, primaryHref, contactHref, portfolio }: Pr
         <PortraitFrame profile={profile} />
       </div>
 
-      {/* Real-time Agricultural Telemetry Dashboard Bar */}
-      <div className="container-x relative z-10 mt-14 sm:mt-20">
-        <AgritechTelemetry data={portfolio} />
-      </div>
-
       {/* Spacious Stats Display */}
       {stats.length > 0 && (
-        <div className="container-x relative z-10 mt-12 sm:mt-16">
+        <div className="container-x relative z-10 mt-14 sm:mt-18">
           <dl className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {stats.map((stat) => (
               <div

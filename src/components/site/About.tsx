@@ -32,23 +32,18 @@ export function About({
             const topSkillNames = catSkills.map((s) => s.name).slice(0, 3).join(', ');
             return {
               title: cat,
-              desc: topSkillNames || 'Specialized agronomic domain and practical fieldwork.',
+              desc: topSkillNames || 'Specialized domain competencies and practical experience.',
             };
           })
-        : [
-            { title: 'Soil Science & Testing', desc: 'Physicochemical evaluation, pH, EC & balanced NPK prescription.' },
-            { title: 'Sustainable Agronomy', desc: 'Crop rotation, biofertilizers, IPM & ecological weed stewardship.' },
-            { title: 'Agroforestry & Ecology', desc: 'FAO-certified multi-tier tree-crop microclimate modeling.' },
-            { title: 'Spatial Precision Ag', desc: 'GIS mapping, satellite NDVI vegetative health tracking.' },
-          ];
+        : [];
 
   const allRows: { key: string; label: string; value: React.ReactNode }[] = [
     { key: 'candidate', label: 'Candidate', value: profile.full_name },
-    { key: 'discipline', label: 'Discipline', value: currentEdu ? currentEdu.qualification : profile.headline.split('·')[0]?.trim() || 'Agricultural Scholar' },
-    { key: 'institution', label: 'Institution', value: currentEdu ? currentEdu.institution : 'Centurion University of Technology & Management' },
-    { key: 'academic_standing', label: 'Academic Standing', value: currentEdu?.score ? `${currentEdu.score_label}: ${currentEdu.score}` : 'GPA: 8.03 / 10' },
-    { key: 'geographic_base', label: 'Geographic Base', value: profile.location },
-    { key: 'availability', label: 'Availability', value: profile.open_to_work ? 'Open for Agronomy & Research Projects' : 'Enrolled Scholar' },
+    { key: 'discipline', label: 'Discipline', value: currentEdu?.qualification || profile.headline?.split('·')[0]?.trim() || '' },
+    { key: 'institution', label: 'Institution', value: currentEdu?.institution || '' },
+    { key: 'academic_standing', label: 'Academic Standing', value: currentEdu?.score ? `${currentEdu.score_label || 'Score'}: ${currentEdu.score}` : '' },
+    { key: 'geographic_base', label: 'Geographic Base', value: profile.location || '' },
+    { key: 'availability', label: 'Availability', value: profile.open_to_work ? 'Available for Opportunities' : '' },
     {
       key: 'cv_download',
       label: 'Curriculum Vitae',
@@ -56,9 +51,7 @@ export function About({
         <a href={profile.resume_url} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-semibold">
           <Download size={14} /> Download CV (PDF)
         </a>
-      ) : (
-        <span className="text-subtle font-mono text-xs">Available on request</span>
-      ),
+      ) : null,
     },
   ];
 

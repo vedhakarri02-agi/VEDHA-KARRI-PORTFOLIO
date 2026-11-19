@@ -54,34 +54,17 @@ export function BlueprintArt({ label, variant = 0, className, animate = false }:
         <line x1="200" y1="220" x2="160" y2="205" strokeWidth="1" opacity="0.5" />
       </g>
 
-      {/* Precision GIS telemetry compass ticks */}
+      {/* Precision telemetry compass ticks and orbit geometry */}
       <g strokeWidth="1.2" opacity="0.6">
         <circle cx="200" cy="200" r="172" strokeDasharray="2 12" />
-        <text x="200" y="24" textAnchor="middle" fill="currentColor" stroke="none" fontSize="10" fontFamily="var(--font-mono)">
-          N 18°46′
-        </text>
-        <text x="382" y="204" textAnchor="middle" fill="currentColor" stroke="none" fontSize="10" fontFamily="var(--font-mono)">
-          E 84°25′
-        </text>
+        <circle cx="200" cy="200" r="185" opacity="0.2" strokeDasharray="1 8" />
       </g>
 
-      {/* Soil health / scientific indicator label */}
-      <g strokeWidth="1" opacity="0.8">
-        <line x1="80" y1="365" x2="320" y2="365" />
-        <circle cx="80" cy="365" r="3" fill="currentColor" />
-        <circle cx="320" cy="365" r="3" fill="currentColor" />
-        <text
-          x="200"
-          y="382"
-          textAnchor="middle"
-          fill="currentColor"
-          stroke="none"
-          fontSize="11"
-          fontFamily="var(--font-mono)"
-          letterSpacing="0.1em"
-        >
-          BIO-AGRONOMY · AGRI-SCIENTIFIC
-        </text>
+      {/* Axis indicator markers */}
+      <g strokeWidth="1" opacity="0.7">
+        <line x1="120" y1="365" x2="280" y2="365" />
+        <circle cx="120" cy="365" r="2.5" fill="currentColor" />
+        <circle cx="280" cy="365" r="2.5" fill="currentColor" />
       </g>
 
       {label && (

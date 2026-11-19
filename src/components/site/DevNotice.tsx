@@ -8,7 +8,7 @@ import type { ContentSource } from '@/lib/types';
 export function DevNotice({ source, error }: { source: ContentSource; error?: string }) {
   if (process.env.NODE_ENV === 'production' || source === 'live') return null;
   return (
-    <div className="fixed right-4 bottom-4 z-50 max-w-sm">
+    <div className="fixed left-4 bottom-4 z-50 max-w-sm">
       <div className="alert alert-warning shadow-2xl backdrop-blur">
         <TriangleAlert size={18} />
         <span>

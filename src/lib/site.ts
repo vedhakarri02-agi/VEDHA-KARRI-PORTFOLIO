@@ -45,8 +45,8 @@ export const SECTION_DEFAULTS: Record<string, { title: string; intro: string }> 
   education: { title: 'Academic Background', intro: 'Formal education in agricultural sciences and natural science foundations.' },
   leadership: { title: 'Leadership & Extracurriculars', intro: 'Student engagement, rural agricultural outreach, and community teamwork.' },
   contact: {
-    title: 'Connect with Veda',
-    intro: 'Open to agricultural research collaborations, internships, and agritech opportunities. Send a message below.',
+    title: 'Get in Touch',
+    intro: 'Open to research collaborations, opportunities, and discussions. Send a message below.',
   },
 };
 

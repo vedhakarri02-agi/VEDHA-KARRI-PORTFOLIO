@@ -37,12 +37,12 @@ export function SiteHeader({ name, monogram, links, resumeUrl }: Props) {
       }`}
     >
       <div className="container-x flex h-16 items-center justify-between gap-4">
-        <nav aria-label="Main" className="hidden items-center gap-1.5 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-1 rounded-full border border-white/[0.08] bg-white/[0.03] p-1.5 backdrop-blur-xl lg:flex shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="rounded-full px-3.5 py-1.5 text-sm text-muted transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+              className="rounded-full px-4 py-1.5 text-xs font-medium tracking-wide text-muted/90 transition-all duration-200 hover:bg-emerald-500/15 hover:text-emerald-300 hover:shadow-[0_0_12px_rgba(16,185,129,0.2)]"
             >
               {link.label}
             </a>
