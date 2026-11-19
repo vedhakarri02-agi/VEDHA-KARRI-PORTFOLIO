@@ -1,10 +1,9 @@
 'use client';
 
 import {
-  ArrowDown,
-  ArrowUp,
   Check,
   ChevronDown,
+  GripVertical,
   Loader2,
   Palette,
   Plus,
@@ -89,13 +88,15 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
   const update = (index: number, patch: Partial<SectionSetting>) =>
     setSections((list) => list.map((s, i) => (i === index ? { ...s, ...patch } : s)));
 
-  const move = (index: number, delta: number) =>
+  const reorder = (fromIndex: number, toIndex: number) => {
+    if (fromIndex === toIndex) return;
     setSections((list) => {
-      const next = [...list];
-      const [item] = next.splice(index, 1);
-      next.splice(index + delta, 0, item!);
-      return next;
+      const copy = [...list];
+      const [moved] = copy.splice(fromIndex, 1);
+      copy.splice(toIndex, 0, moved!);
+      return copy;
     });
+  };
 
   const removeSection = (index: number) => {
     const target = sections[index];
@@ -329,28 +330,31 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
               }`}
             >
               <div className="flex items-center gap-3 p-3 pr-4">
-                <div className="flex flex-col">
-                  <button
-                    type="button"
-                    className="btn btn-ghost btn-icon size-7 text-muted hover:text-fg"
-                    disabled={i === 0}
-                    onClick={() => move(i, -1)}
-                    aria-label={`Move ${sectionLabel(section.key)} up`}
-                  >
-                    <ArrowUp size={14} />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-ghost btn-icon size-7 text-muted hover:text-fg"
-                    disabled={i === sections.length - 1}
-                    onClick={() => move(i, 1)}
-                    aria-label={`Move ${sectionLabel(section.key)} down`}
-                  >
-                    <ArrowDown size={14} />
-                  </button>
+                <div
+                  draggable
+                  onDragStart={(e) => {
+                    e.dataTransfer.setData('text/plain', String(i));
+                    e.dataTransfer.effectAllowed = 'move';
+                  }}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const from = Number(e.dataTransfer.getData('text/plain'));
+                    if (!isNaN(from) && from !== i) {
+                      reorder(from, i);
+                    }
+                  }}
+                  className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.02] px-2.5 py-1.5 text-muted transition-all select-none hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-300 cursor-grab active:cursor-grabbing shrink-0"
+                  title="Drag to reorder section"
+                >
+                  <GripVertical size={15} />
+                  <span className="font-mono text-xs font-semibold text-subtle">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                 </div>
-
-                <span className="w-7 font-mono text-xs text-subtle">{String(i + 1).padStart(2, '0')}</span>
 
                 <button
                   type="button"

@@ -1,7 +1,7 @@
 'use client';
 
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { ArrowDown, ArrowUp, Eye, EyeOff, Loader2, Pencil, Plus, Trash2, X } from 'lucide-react';
+import { Eye, EyeOff, GripVertical, Loader2, Pencil, Plus, Trash2, X } from 'lucide-react';
 import Image from 'next/image';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { deleteRow, insertRow, listRows, removeMediaList, saveOrder, setRowVisible, updateRow } from '@/lib/admin-api';
@@ -30,15 +30,16 @@ export function CollectionEditor({ collection }: { collection: CollectionKey }) 
   const [editing, setEditing] = useState<Row | 'new' | null>(null);
   const [busyId, setBusyId] = useState<string | null>(null);
 
-  const move = async (index: number, delta: number) => {
-    if (!rows) return;
+  const reorder = async (fromIndex: number, toIndex: number) => {
+    if (!rows || fromIndex === toIndex) return;
     const next = [...rows];
-    const [item] = next.splice(index, 1);
-    next.splice(index + delta, 0, item!);
+    const [item] = next.splice(fromIndex, 1);
+    next.splice(toIndex, 0, item!);
     setData(() => next);
     try {
       const saved = await saveOrder(supabase, config.table, next);
       setData(() => saved);
+      toast.success('Order updated. Live on site.');
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Couldn’t save the new order.');
       reload();
@@ -116,19 +117,30 @@ export function CollectionEditor({ collection }: { collection: CollectionKey }) 
                   row.is_visible ? '' : 'opacity-60'
                 }`}
               >
-                <div className="flex flex-col">
-                  <button type="button" className="btn btn-ghost btn-icon size-7" disabled={i === 0} onClick={() => move(i, -1)} aria-label={`Move ${summary.title} up`}>
-                    <ArrowUp size={15} />
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-ghost btn-icon size-7"
-                    disabled={i === rows.length - 1}
-                    onClick={() => move(i, 1)}
-                    aria-label={`Move ${summary.title} down`}
-                  >
-                    <ArrowDown size={15} />
-                  </button>
+                <div
+                  draggable
+                  onDragStart={(e) => {
+                    e.dataTransfer.setData('text/plain', String(i));
+                    e.dataTransfer.effectAllowed = 'move';
+                  }}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                  }}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const from = Number(e.dataTransfer.getData('text/plain'));
+                    if (!isNaN(from) && from !== i) {
+                      reorder(from, i);
+                    }
+                  }}
+                  className="flex items-center gap-1.5 rounded-lg border border-white/[0.08] bg-white/[0.02] px-2.5 py-1.5 text-muted transition-all select-none hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-300 cursor-grab active:cursor-grabbing shrink-0"
+                  title="Drag to reorder"
+                >
+                  <GripVertical size={15} />
+                  <span className="font-mono text-xs font-semibold text-subtle">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                 </div>
 
                 {summary.image && (

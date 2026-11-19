@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowDown, ArrowUp, FileText, ImagePlus, Loader2, Plus, Trash2, Upload, X } from 'lucide-react';
+import { FileText, GripVertical, ImagePlus, Loader2, Plus, Trash2, Upload, X } from 'lucide-react';
 import Image from 'next/image';
 import { useId, useRef, useState } from 'react';
 import type { Draft, FieldConfig } from '@/lib/collections';
@@ -246,10 +246,11 @@ function ListInput({ id, value, onChange }: { id: string; value: string[]; onCha
     onChange(next);
     requestAnimationFrame(() => refs.current[index + 1]?.focus());
   };
-  const move = (index: number, delta: number) => {
+  const reorder = (from: number, to: number) => {
+    if (from === to) return;
     const next = [...value];
-    const [item] = next.splice(index, 1);
-    next.splice(index + delta, 0, item!);
+    const [moved] = next.splice(from, 1);
+    next.splice(to, 0, moved!);
     onChange(next);
   };
 
@@ -257,13 +258,34 @@ function ListInput({ id, value, onChange }: { id: string; value: string[]; onCha
     <div id={id} className="grid gap-2">
       {value.map((line, i) => (
         <div key={i} className="flex items-start gap-2">
-          <span className="mt-3.5 size-1.5 shrink-0 rotate-45 bg-accent" aria-hidden="true" />
+          <div
+            draggable
+            onDragStart={(e) => {
+              e.dataTransfer.setData('text/plain', String(i));
+              e.dataTransfer.effectAllowed = 'move';
+            }}
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.dataTransfer.dropEffect = 'move';
+            }}
+            onDrop={(e) => {
+              e.preventDefault();
+              const from = Number(e.dataTransfer.getData('text/plain'));
+              if (!isNaN(from) && from !== i) {
+                reorder(from, i);
+              }
+            }}
+            className="mt-2.5 p-1 text-muted hover:text-emerald-400 cursor-grab active:cursor-grabbing shrink-0 transition-colors"
+            title="Drag to reorder"
+          >
+            <GripVertical size={16} />
+          </div>
           <textarea
             ref={(el) => {
               refs.current[i] = el;
             }}
             aria-label={`Line ${i + 1}`}
-            className="input min-h-0 py-2"
+            className="input min-h-0 py-2 flex-1"
             rows={2}
             value={line}
             onChange={(e) => set(i, e.target.value.replace(/\n/g, ' '))}
@@ -274,20 +296,6 @@ function ListInput({ id, value, onChange }: { id: string; value: string[]; onCha
               }
             }}
           />
-          <div className="flex shrink-0 flex-col">
-            <button type="button" className="btn btn-ghost btn-icon size-7" disabled={i === 0} onClick={() => move(i, -1)} aria-label="Move line up">
-              <ArrowUp size={14} />
-            </button>
-            <button
-              type="button"
-              className="btn btn-ghost btn-icon size-7"
-              disabled={i === value.length - 1}
-              onClick={() => move(i, 1)}
-              aria-label="Move line down"
-            >
-              <ArrowDown size={14} />
-            </button>
-          </div>
           <button type="button" className="btn btn-ghost btn-icon mt-1 shrink-0" onClick={() => onChange(value.filter((_, j) => j !== i))} aria-label={`Remove line ${i + 1}`}>
             <Trash2 size={15} />
           </button>
