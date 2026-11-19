@@ -40,7 +40,7 @@ const profile: Profile = {
   email: 'vedhakarri25@gmail.com',
   phone: '+91 79817 58431',
   show_phone: true,
-  linkedin_url: 'https://www.linkedin.com/in/vedha-karri',
+  linkedin_url: 'https://www.linkedin.com/in/vedha-karri-5606703a6',
   github_url: '',
   avatar_url: '',
   resume_url: '',

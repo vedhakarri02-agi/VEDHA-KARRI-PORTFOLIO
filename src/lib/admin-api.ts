@@ -71,7 +71,11 @@ export async function saveOrder<T extends RowBase>(supabase: SupabaseClient, tab
 // ---------------------------------------------------------------------------
 
 export async function fetchProfile(supabase: SupabaseClient): Promise<Profile | null> {
-  return unwrap(await supabase.from('profile').select('*').eq('id', 1).maybeSingle()) as Profile | null;
+  const profile = unwrap(await supabase.from('profile').select('*').eq('id', 1).maybeSingle()) as Profile | null;
+  if (profile && (!profile.linkedin_url || profile.linkedin_url === 'https://www.linkedin.com/in/vedha-karri')) {
+    profile.linkedin_url = 'https://www.linkedin.com/in/vedha-karri-5606703a6';
+  }
+  return profile;
 }
 
 export async function saveProfile(supabase: SupabaseClient, profile: Omit<Profile, 'id'>): Promise<Profile> {

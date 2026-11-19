@@ -92,10 +92,21 @@ export const getPortfolio = cache(async (): Promise<PortfolioResult> => {
     }
 
     const siteSettings = settings.data as SiteSettings | null;
+    const rawProfile = profile.data as Profile;
+    const userProfile: Profile = rawProfile
+      ? {
+          ...rawProfile,
+          linkedin_url:
+            !rawProfile.linkedin_url || rawProfile.linkedin_url === 'https://www.linkedin.com/in/vedha-karri'
+              ? 'https://www.linkedin.com/in/vedha-karri-5606703a6'
+              : rawProfile.linkedin_url,
+        }
+      : rawProfile;
+
     const res: PortfolioResult = {
       source: 'live',
       data: {
-        profile: profile.data as Profile,
+        profile: userProfile,
         settings: {
           id: 1,
           sections: normalizeSections(siteSettings?.sections),

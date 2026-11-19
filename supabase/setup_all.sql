@@ -379,7 +379,7 @@ insert into public.profile (
 My academic training and hands-on laboratory work encompass comprehensive soil health testing, balanced nutrient management, crop cultivation methodologies, seed technology, and watershed stewardship. I actively explore the integration of GIS and remote sensing tools to improve precision agronomy and optimize natural resource management.
 
 Certified by the FAO in Agroforestry for Sustainable Agrifood Transformation and by NPTEL in Natural Resources Management (Elite), I am passionate about connecting lab research with grassroots farming resilience. I welcome opportunities in agricultural research, agronomy internships, and agribusiness development.', 'Palasa, Andhra Pradesh, India',
-  'vedhakarri25@gmail.com', '+91 79817 58431', true, 'https://www.linkedin.com/in/vedha-karri', '',
+  'vedhakarri25@gmail.com', '+91 79817 58431', true, 'https://www.linkedin.com/in/vedha-karri-5606703a6', '',
   '', '', true, 'Veda Sri Karri — B.Sc. (Hons) Agriculture Portfolio', 'Portfolio of Veda Sri Karri, B.Sc. (Hons) Agriculture scholar at Centurion University. Specialized in soil health testing, sustainable crop management, natural resource conservation, and agroforestry.'
 )
 on conflict (id) do update set
