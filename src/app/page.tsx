@@ -17,7 +17,7 @@ import { SmoothScroll } from '@/components/site/SmoothScroll';
 import { BotanicalParticles } from '@/components/site/BotanicalParticles';
 import { getPortfolio, getStats, visibleSections } from '@/lib/content';
 import { initials } from '@/lib/format';
-import { SECTION_LABELS, sectionIntro, sectionLabel, sectionTitle } from '@/lib/site';
+import { SECTION_LABELS, getSiteUrl, sectionIntro, sectionLabel, sectionTitle } from '@/lib/site';
 import type { Portfolio, SectionKey, SectionSetting } from '@/lib/types';
 import { AchievementsGrid } from '@/components/site/AchievementsGrid';
 import { ThemeSwitcher } from '@/components/site/ThemeSwitcher';
@@ -28,14 +28,61 @@ export const dynamic = 'force-dynamic';
 export async function generateMetadata(): Promise<Metadata> {
   const { data } = await getPortfolio();
   const { profile } = data;
+  const siteUrl = getSiteUrl();
   const title = profile.seo_title || `${profile.full_name} — B.Sc. (Hons) Agriculture Portfolio`;
   const description = profile.seo_description || profile.headline;
+  const keywords = Array.from(
+    new Set([
+      'Agriculture',
+      'Agronomy',
+      'Soil Testing',
+      'Sustainable Agriculture',
+      'Precision Farming',
+      'Agroforestry',
+      profile.full_name,
+      ...data.skills.map((s) => s.name),
+    ])
+  );
+
   return {
     title: { absolute: title },
     description,
+    keywords,
+    authors: [{ name: profile.full_name, url: siteUrl }],
+    creator: profile.full_name,
     alternates: { canonical: '/' },
-    openGraph: { title, description, type: 'profile', url: '/', siteName: profile.full_name },
-    twitter: { card: 'summary_large_image', title, description },
+    openGraph: {
+      title,
+      description,
+      type: 'profile',
+      url: '/',
+      siteName: `${profile.full_name} Portfolio`,
+      images: [
+        {
+          url: '/opengraph-image',
+          width: 1200,
+          height: 630,
+          alt: `${profile.full_name} — Academic & Field Portfolio`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/opengraph-image'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
 
@@ -80,9 +127,66 @@ export default async function HomePage() {
   const sections = visibleSections(data);
   const keys = sections.map((s) => s.key);
   const primaryHref = keys.includes('projects') ? '#projects' : keys.includes('experience') ? '#experience' : null;
+  const siteUrl = getSiteUrl();
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Person',
+        '@id': `${siteUrl}/#person`,
+        name: data.profile.full_name,
+        jobTitle: data.profile.headline,
+        description: data.profile.seo_description || data.profile.headline,
+        url: siteUrl,
+        image: data.profile.avatar_url || `${siteUrl}/opengraph-image`,
+        sameAs: [data.profile.linkedin_url, data.profile.github_url].filter(Boolean),
+        address: data.profile.location
+          ? {
+              '@type': 'PostalAddress',
+              addressLocality: data.profile.location,
+            }
+          : undefined,
+        alumniOf: data.education.map((e) => ({
+          '@type': 'EducationalOrganization',
+          name: e.institution,
+        })),
+        knowsAbout: data.skills.map((s) => s.name),
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${siteUrl}/#website`,
+        url: siteUrl,
+        name: `${data.profile.full_name} Portfolio`,
+        description: data.profile.seo_description || data.profile.headline,
+        publisher: {
+          '@id': `${siteUrl}/#person`,
+        },
+      },
+      {
+        '@type': 'ProfilePage',
+        '@id': `${siteUrl}/#webpage`,
+        url: siteUrl,
+        name: `${data.profile.full_name} — Academic & Field Portfolio`,
+        isPartOf: {
+          '@id': `${siteUrl}/#website`,
+        },
+        about: {
+          '@id': `${siteUrl}/#person`,
+        },
+        mainEntity: {
+          '@id': `${siteUrl}/#person`,
+        },
+      },
+    ],
+  };
 
   return (
     <SmoothScroll>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="blueprint-bg" aria-hidden="true" />
       <BotanicalParticles />
       <SiteHeader

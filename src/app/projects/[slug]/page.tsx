@@ -11,7 +11,7 @@ import { ThemeSwitcher } from '@/components/site/ThemeSwitcher';
 import { SmoothScroll } from '@/components/site/SmoothScroll';
 import { getPortfolio, visibleSections } from '@/lib/content';
 import { initials, pad2, paragraphs } from '@/lib/format';
-import { SECTION_LABELS } from '@/lib/site';
+import { SECTION_LABELS, getSiteUrl } from '@/lib/site';
 
 export const dynamic = 'force-dynamic';
 
@@ -33,6 +33,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     openGraph: {
       title: `${project.title} — ${data.profile.full_name}`,
       description,
+      type: 'article',
+      images: project.cover_url ? [project.cover_url] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${project.title} — ${data.profile.full_name}`,
+      description,
       images: project.cover_url ? [project.cover_url] : undefined,
     },
   };
@@ -45,9 +52,30 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   const next = data.projects.length > 1 ? data.projects[(index + 1) % data.projects.length] : null;
   const images = [project.cover_url, ...project.gallery].filter(Boolean);
+  const siteUrl = getSiteUrl();
+
+  const projectJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ResearchProject',
+    name: project.title,
+    headline: project.summary,
+    description: project.description,
+    url: `${siteUrl}/projects/${project.slug}`,
+    image: project.cover_url || undefined,
+    keywords: project.tools,
+    author: {
+      '@type': 'Person',
+      name: data.profile.full_name,
+      url: siteUrl,
+    },
+  };
 
   return (
     <SmoothScroll>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
       <div className="blueprint-bg" aria-hidden="true" />
       <SiteHeader
         name={data.profile.full_name}

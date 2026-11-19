@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import * as THREE from 'three';
 
 interface VantaEffect {
   destroy: () => void;
@@ -17,9 +16,17 @@ export function VantaHeroBackground() {
 
     async function initVanta() {
       try {
-        // Dynamic import to avoid SSR evaluation
-        // @ts-expect-error - vanta lacks official types
-        const vantaModule = await import('vanta/dist/vanta.waves.min');
+        // Skip heavy WebGL on reduced-motion preference
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          return;
+        }
+
+        // Dynamically import Three.js and Vanta Waves in parallel without blocking initial render
+        const [THREE, vantaModule] = await Promise.all([
+          import('three'),
+          // @ts-expect-error - vanta lacks official types
+          import('vanta/dist/vanta.waves.min'),
+        ]);
         const WAVES = vantaModule.default || vantaModule;
 
         if (vantaRef.current && !effect) {
@@ -27,17 +34,17 @@ export function VantaHeroBackground() {
             el: vantaRef.current,
             THREE,
             mouseControls: true,
-            touchControls: true,
+            touchControls: false, // Prevents scroll hijacking on mobile touchscreens
             gyroControls: false,
             minHeight: 200.0,
             minWidth: 200.0,
             scale: 1.0,
-            scaleMobile: 1.2,
+            scaleMobile: 1.0,
             color: 0x093822, // Rich agricultural emerald green
-            shininess: 35.0,
-            waveHeight: 18.0,
-            waveSpeed: 0.7,
-            zoom: 0.88,
+            shininess: 30.0,
+            waveHeight: 16.0,
+            waveSpeed: 0.6,
+            zoom: 0.9,
           });
           setIsLoaded(true);
         }

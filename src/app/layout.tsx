@@ -15,17 +15,33 @@ export const metadata: Metadata = {
   },
   description:
     'Academic and field portfolio of Veda Sri Karri, B.Sc. (Hons) Agriculture scholar at Centurion University of Technology and Management. Expertise in soil testing, sustainable agronomy, natural resource management, and agroforestry.',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 };
 
 export const viewport: Viewport = {
   themeColor: '#030805',
   colorScheme: 'dark',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`} suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://mqnobywvbluuticblnjy.supabase.co" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://mqnobywvbluuticblnjy.supabase.co" />
         <script
           dangerouslySetInnerHTML={{
             __html: `try{const t=localStorage.getItem('portfolio-theme');if(t){document.documentElement.dataset.theme=t;}}catch(e){}`,
