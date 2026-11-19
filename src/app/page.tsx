@@ -20,7 +20,6 @@ import { initials } from '@/lib/format';
 import { getSiteUrl, sectionIntro, sectionLabel, sectionTitle } from '@/lib/site';
 import type { Portfolio, SectionSetting } from '@/lib/types';
 import { AchievementsGrid } from '@/components/site/AchievementsGrid';
-import { ThemeSwitcher } from '@/components/site/ThemeSwitcher';
 
 // Always render with the latest content so admin edits show up immediately.
 export const dynamic = 'force-dynamic';
@@ -184,6 +183,11 @@ export default async function HomePage() {
   return (
     <>
       <script
+        dangerouslySetInnerHTML={{
+          __html: `document.documentElement.dataset.theme = ${JSON.stringify(data.settings.theme_color || 'emerald')};`,
+        }}
+      />
+      <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
@@ -218,7 +222,6 @@ export default async function HomePage() {
           ))}
         </main>
         <SiteFooter name={data.profile.full_name} revision={data.settings.content_version} profile={data.profile} />
-        <ThemeSwitcher initialTheme={data.settings.theme_color} />
         <LiveRefresh />
         <DevNotice source={source} error={error} />
       </SmoothScroll>

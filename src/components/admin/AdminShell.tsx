@@ -25,7 +25,7 @@ import {
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { countUnread } from '@/lib/admin-api';
+import { countUnread, saveThemeColor } from '@/lib/admin-api';
 import { THEMES } from '@/lib/site';
 import { getBrowserSupabase } from '@/lib/supabase/browser';
 import { AdminContext } from './AdminContext';
@@ -188,16 +188,19 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
             <button
               key={t.id}
               type="button"
-              onClick={() => {
+              onClick={async () => {
                 document.documentElement.dataset.theme = t.id;
                 try {
                   localStorage.setItem('portfolio-theme', t.id);
-                } catch {}
+                  await saveThemeColor(supabase, t.id);
+                } catch {
+                  // Handled silently
+                }
               }}
-              className="size-3.5 rounded-full border border-white/20 transition-transform hover:scale-125"
+              className="size-3.5 rounded-full border border-white/20 transition-transform hover:scale-125 cursor-pointer"
               style={{ background: t.accent }}
-              title={t.label}
-              aria-label={`Switch to ${t.label}`}
+              title={`Set Portfolio Atmosphere: ${t.label}`}
+              aria-label={`Set Portfolio Atmosphere: ${t.label}`}
             />
           ))}
         </div>

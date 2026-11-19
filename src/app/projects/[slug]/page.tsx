@@ -7,7 +7,6 @@ import { BlueprintArt } from '@/components/site/BlueprintArt';
 import { LiveRefresh } from '@/components/site/LiveRefresh';
 import { SiteFooter } from '@/components/site/SiteFooter';
 import { SiteHeader } from '@/components/site/SiteHeader';
-import { ThemeSwitcher } from '@/components/site/ThemeSwitcher';
 import { SmoothScroll } from '@/components/site/SmoothScroll';
 import { getPortfolio, visibleSections } from '@/lib/content';
 import { initials, pad2, paragraphs } from '@/lib/format';
@@ -72,6 +71,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   return (
     <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.documentElement.dataset.theme = ${JSON.stringify(data.settings.theme_color || 'emerald')};`,
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
@@ -191,7 +195,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </main>
 
       <SiteFooter name={data.profile.full_name} revision={data.settings.content_version} profile={data.profile} />
-      <ThemeSwitcher initialTheme={data.settings.theme_color} />
       <LiveRefresh />
     </SmoothScroll>
   </>

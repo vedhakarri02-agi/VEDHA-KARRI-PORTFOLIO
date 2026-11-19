@@ -14,7 +14,7 @@ import {
   X,
 } from 'lucide-react';
 import { useMemo, useState, useEffect } from 'react';
-import { fetchSettings, saveSections } from '@/lib/admin-api';
+import { fetchSettings, saveSections, saveThemeColor } from '@/lib/admin-api';
 import { SECTION_DEFAULTS, sectionLabel, THEMES, extractThemeColor } from '@/lib/site';
 import type { SectionSetting, ThemeColor } from '@/lib/types';
 import { useAdmin, useAdminQuery, useUnsavedChanges } from './AdminContext';
@@ -67,7 +67,7 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
     }
   }, [currentTheme]);
 
-  const handleThemeChange = (themeId: ThemeColor) => {
+  const handleThemeChange = async (themeId: ThemeColor) => {
     setCurrentTheme(themeId);
     setSections((list) => {
       const updated = list.map((s, idx) => (idx === 0 ? { ...s, theme: themeId } : s));
@@ -77,6 +77,13 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
       }
       return [{ key: '__theme', title: themeId, visible: false }, ...updated];
     });
+    try {
+      await saveThemeColor(supabase, themeId);
+      const themeMeta = THEMES.find((t) => t.id === themeId);
+      toast.success(`Theme updated to ${themeMeta?.label || themeId}. Live on your portfolio.`);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : 'Failed to save theme setting.');
+    }
   };
 
   const update = (index: number, patch: Partial<SectionSetting>) =>

@@ -42,11 +42,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://mqnobywvbluuticblnjy.supabase.co" crossOrigin="" />
         <link rel="dns-prefetch" href="https://mqnobywvbluuticblnjy.supabase.co" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `try{const t=localStorage.getItem('portfolio-theme');if(t){document.documentElement.dataset.theme=t;}}catch(e){}`,
-          }}
-        />
       </head>
       <body className="min-h-dvh" suppressHydrationWarning>{children}</body>
     </html>

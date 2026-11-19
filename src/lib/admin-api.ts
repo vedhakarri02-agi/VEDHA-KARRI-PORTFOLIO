@@ -3,7 +3,7 @@ import { slugify } from './format';
 import { STARTER_CONTENT } from './seed-content';
 import { normalizeSections } from './site';
 import { MEDIA_BUCKET } from './supabase/env';
-import type { ContactMessage, Profile, RowBase, SectionSetting, SiteSettings } from './types';
+import type { ContactMessage, Profile, RowBase, SectionSetting, SiteSettings, ThemeColor } from './types';
 
 // Data access for the admin dashboard. Every call runs as the signed-in admin,
 // and the database's Row Level Security rejects it for anyone else.
@@ -85,6 +85,17 @@ export async function fetchSettings(supabase: SupabaseClient): Promise<SiteSetti
 
 export async function saveSections(supabase: SupabaseClient, sections: SectionSetting[]) {
   unwrap(await supabase.from('site_settings').upsert({ id: 1, sections }));
+}
+
+export async function saveThemeColor(supabase: SupabaseClient, themeId: ThemeColor): Promise<ThemeColor> {
+  const current = await fetchSettings(supabase);
+  const updated = current.sections.map((s, idx) => (idx === 0 ? { ...s, theme: themeId } : s));
+  const hasThemeItem = updated.some((s) => s.key === '__theme');
+  const sections = hasThemeItem
+    ? updated.map((s) => (s.key === '__theme' ? { ...s, title: themeId } : s))
+    : [{ key: '__theme', title: themeId, visible: false }, ...updated];
+  await saveSections(supabase, sections);
+  return themeId;
 }
 
 // ---------------------------------------------------------------------------
