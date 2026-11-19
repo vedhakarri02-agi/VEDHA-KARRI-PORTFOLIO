@@ -94,7 +94,7 @@ function Overview({ data }: { data: DashboardData }) {
           ? 'Add your first project'
           : data.projectsWithoutCover === 0
             ? 'Every project has a cover image'
-            : `Add cover images to ${data.projectsWithoutCover} project${data.projectsWithoutCover > 1 ? 's' : ''} (CAD renders work great)`,
+            : `Add cover images to ${data.projectsWithoutCover} project${data.projectsWithoutCover > 1 ? 's' : ''} (field photos or diagrams work great)`,
       href: '/admin/projects',
     },
   ];

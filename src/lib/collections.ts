@@ -63,18 +63,18 @@ export type CollectionConfig = {
 export type CollectionKey = 'internships' | 'leadership' | 'projects' | 'skills' | 'certifications' | 'education';
 
 const experienceFields = (kind: 'internship' | 'leadership'): FieldConfig[] => [
-  { name: 'role', label: kind === 'internship' ? 'Role / title' : 'Role', type: 'text', required: true, maxLength: 120, placeholder: 'AutoCAD Intern' },
-  { name: 'organization', label: 'Organisation', type: 'text', required: true, maxLength: 160, placeholder: 'Hindustan Shipyard Limited' },
+  { name: 'role', label: kind === 'internship' ? 'Role / title' : 'Role', type: 'text', required: true, maxLength: 120, placeholder: 'Field Agronomist & Soil Analyst' },
+  { name: 'organization', label: 'Organisation', type: 'text', required: true, maxLength: 160, placeholder: 'Agronomy Research Station' },
   { name: 'start_date', label: 'Start month', type: 'month', required: true },
   { name: 'end_date', label: 'End month', type: 'month-or-present' },
-  { name: 'location', label: 'Location', type: 'text', maxLength: 120, placeholder: 'Visakhapatnam, Andhra Pradesh' },
+  { name: 'location', label: 'Location', type: 'text', maxLength: 120, placeholder: 'Palasa, Andhra Pradesh' },
   { name: 'mode', label: 'Work mode', type: 'select', options: ['', 'On-site', 'Remote', 'Hybrid'] },
   {
     name: 'bullets',
     label: 'What you did',
     type: 'list',
     wide: true,
-    help: 'One achievement per line. Start with a verb and add numbers where you can (e.g. “Drafted 12 fixture drawings…”).',
+    help: 'One achievement per line. Start with a verb and add numbers where you can (e.g. “Analyzed 24 soil profile samples…”).',
   },
   ...(kind === 'internship'
     ? ([
@@ -148,15 +148,15 @@ export const COLLECTIONS: Record<CollectionKey, CollectionConfig> = {
     description: 'Each project gets a card on the homepage and its own page.',
     fields: [
       { name: 'title', label: 'Title', type: 'text', required: true, maxLength: 160, wide: true },
-      { name: 'category', label: 'Category', type: 'text', maxLength: 120, placeholder: 'Product Design · Fusion 360' },
-      { name: 'slug', label: 'URL slug', type: 'text', maxLength: 80, placeholder: 'study-lamp-design', help: 'Leave empty to create it from the title.' },
+      { name: 'category', label: 'Category', type: 'text', maxLength: 120, placeholder: 'Agronomic Research · Soil Health' },
+      { name: 'slug', label: 'URL slug', type: 'text', maxLength: 80, placeholder: 'soil-health-npk-profiling', help: 'Leave empty to create it from the title.' },
       { name: 'summary', label: 'Short summary', type: 'textarea', rows: 2, maxLength: 400, wide: true, help: 'Shown on the project card.' },
       { name: 'description', label: 'Full description', type: 'textarea', rows: 8, maxLength: 10000, wide: true, help: 'Leave a blank line between paragraphs.' },
       { name: 'tools', label: 'Tools & skills', type: 'tags', wide: true, help: 'Press Enter or comma after each one.' },
-      { name: 'cover_url', label: 'Cover image', type: 'image', media: { kind: 'image', folder: 'projects' }, help: 'A render or photo, ideally 16:10.' },
+      { name: 'cover_url', label: 'Cover image', type: 'image', media: { kind: 'image', folder: 'projects' }, help: 'A field photograph or research graphic, ideally 16:10.' },
       { name: 'featured', label: 'Featured project', type: 'toggle' },
-      { name: 'gallery', label: 'Gallery', type: 'gallery', wide: true, media: { kind: 'image', folder: 'projects' }, help: 'Drawings, renders, prototypes — up to 5 MB each.' },
-      { name: 'links', label: 'Links', type: 'links', wide: true, help: 'e.g. a drawing PDF, a video or a GrabCAD model.' },
+      { name: 'gallery', label: 'Gallery', type: 'gallery', wide: true, media: { kind: 'image', folder: 'projects' }, help: 'Field photos, charts, data graphics — up to 5 MB each.' },
+      { name: 'links', label: 'Links', type: 'links', wide: true, help: 'e.g. a research paper PDF, report, or presentation.' },
     ],
     defaults: { title: '', slug: '', category: '', summary: '', description: '', tools: [], cover_url: '', gallery: [], links: [], featured: false },
     summary: (row) => {
@@ -178,8 +178,8 @@ export const COLLECTIONS: Record<CollectionKey, CollectionConfig> = {
     singular: 'skill',
     description: 'Skills are grouped by category on the site, in the order below.',
     fields: [
-      { name: 'name', label: 'Skill', type: 'text', required: true, maxLength: 80, placeholder: 'SolidWorks' },
-      { name: 'category', label: 'Category', type: 'text', required: true, maxLength: 60, placeholder: 'CAD & Design' },
+      { name: 'name', label: 'Skill', type: 'text', required: true, maxLength: 80, placeholder: 'Soil Testing & NPK Profiling' },
+      { name: 'category', label: 'Category', type: 'text', required: true, maxLength: 60, placeholder: 'Soil & Nutrient Science' },
       {
         name: 'level',
         label: 'Proficiency (optional)',
@@ -203,8 +203,8 @@ export const COLLECTIONS: Record<CollectionKey, CollectionConfig> = {
     description: 'Certificates, courses and workshops.',
     fields: [
       { name: 'title', label: 'Title', type: 'text', required: true, maxLength: 200, wide: true },
-      { name: 'issuer', label: 'Issued by', type: 'text', maxLength: 160, placeholder: 'IIT Bombay e-Yantra' },
-      { name: 'issued_on', label: 'Date', type: 'text', maxLength: 40, placeholder: '2025 or Mar 2025' },
+      { name: 'issuer', label: 'Issued by', type: 'text', maxLength: 160, placeholder: 'FAO eLearning Academy' },
+      { name: 'issued_on', label: 'Date', type: 'text', maxLength: 40, placeholder: '2026 or Jan 2026' },
       { name: 'credential_url', label: 'Verification link', type: 'url', placeholder: 'https://…' },
       { name: 'file_url', label: 'Certificate file', type: 'file', media: { kind: 'image-or-pdf', folder: 'certificates' }, help: 'PDF or image.' },
     ],
@@ -221,13 +221,13 @@ export const COLLECTIONS: Record<CollectionKey, CollectionConfig> = {
     singular: 'qualification',
     description: 'Degrees and school qualifications. The first CGPA shown here also appears in the hero stats.',
     fields: [
-      { name: 'qualification', label: 'Qualification', type: 'text', maxLength: 160, placeholder: 'Bachelor of Technology (B.Tech)', wide: true },
+      { name: 'qualification', label: 'Qualification', type: 'text', maxLength: 160, placeholder: 'B.Sc. (Hons.) Agriculture', wide: true },
       { name: 'institution', label: 'Institution / board', type: 'text', required: true, maxLength: 200, wide: true },
-      { name: 'field', label: 'Field / stream', type: 'text', maxLength: 160, placeholder: 'Mechanical Engineering', wide: true },
+      { name: 'field', label: 'Field / stream', type: 'text', maxLength: 160, placeholder: 'Agricultural Sciences & Agronomy', wide: true },
       { name: 'start_year', label: 'Start year', type: 'number', min: 1950, max: 2100 },
       { name: 'end_year', label: 'End / passing year', type: 'number', min: 1950, max: 2100 },
-      { name: 'score_label', label: 'Score label', type: 'text', maxLength: 40, placeholder: 'CGPA' },
-      { name: 'score', label: 'Score', type: 'text', maxLength: 40, placeholder: '8.23 / 10' },
+      { name: 'score_label', label: 'Score label', type: 'text', maxLength: 40, placeholder: 'GPA' },
+      { name: 'score', label: 'Score', type: 'text', maxLength: 40, placeholder: '8.03 / 10' },
     ],
     defaults: { institution: '', qualification: '', field: '', start_year: null, end_year: null, score_label: 'CGPA', score: '' },
     summary: (row) => {
@@ -256,7 +256,7 @@ export const PROFILE_GROUPS: { title: string; description: string; fields: Field
     fields: [
       { name: 'full_name', label: 'Full name', type: 'text', required: true, maxLength: 120 },
       { name: 'open_to_work', label: 'Show “Open to work” badge', type: 'toggle' },
-      { name: 'headline', label: 'Headline', type: 'text', maxLength: 220, wide: true, placeholder: 'Final-Year Mechanical Engineering Student · Mechanical Design & CAD' },
+      { name: 'headline', label: 'Headline', type: 'text', maxLength: 220, wide: true, placeholder: 'B.Sc. (Hons) Agriculture Scholar · Sustainable Agronomy & Natural Resource Management' },
       { name: 'tagline', label: 'Tagline / quote', type: 'textarea', rows: 2, maxLength: 300, wide: true },
       { name: 'avatar_url', label: 'Profile photo', type: 'image', media: { kind: 'image', folder: 'profile' }, wide: true, help: 'A square, well-lit headshot works best.' },
     ],

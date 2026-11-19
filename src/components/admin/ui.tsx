@@ -51,7 +51,7 @@ export function SetupNotice() {
         <p className="mt-3 text-sm leading-relaxed text-muted">
           The admin dashboard needs Supabase. Add <code className="text-accent-glow">NEXT_PUBLIC_SUPABASE_URL</code> and{' '}
           <code className="text-accent-glow">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to <code className="text-accent-glow">.env.local</code>, run{' '}
-          <code className="text-accent-glow">supabase/schema.sql</code> in the Supabase SQL editor, then restart the dev server. README.md has the
+          <code className="text-accent-glow">supabase/setup_all.sql</code> in the Supabase SQL editor, then restart the dev server. README.md has the
           step-by-step setup.
         </p>
         <Link href="/" className="btn btn-outline mt-6">
