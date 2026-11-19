@@ -55,7 +55,7 @@ export const getPortfolio = cache(async (): Promise<PortfolioResult> => {
     return cachedPortfolio.result;
   }
 
-  const supabase = createServerSupabase(1000);
+  const supabase = createServerSupabase(3500);
   if (!supabase) {
     const res: PortfolioResult = { data: PUBLIC_STARTER, source: 'starter' };
     cachedPortfolio = { result: res, expiresAt: now + 30_000 };
