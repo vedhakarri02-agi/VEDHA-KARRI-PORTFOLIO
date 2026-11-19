@@ -1,25 +1,45 @@
 import { Download, Sprout, CheckCircle2, Award, BookOpen, MapPin } from 'lucide-react';
 import { paragraphs } from '@/lib/format';
-import type { Education, Profile } from '@/lib/types';
+import type { Education, Profile, Skill } from '@/lib/types';
 
 /** About text plus an Agronomic Researcher Dossier & Technical Profile Sheet. */
-export function About({ profile, education }: { profile: Profile; education: Education[] }) {
+export function About({
+  profile,
+  education,
+  skills = [],
+}: {
+  profile: Profile;
+  education: Education[];
+  skills?: Skill[];
+}) {
   const currentEdu = education[0];
 
-  const fieldHighlights = [
-    { title: 'Soil Science & Testing', desc: 'Physicochemical evaluation, pH, EC & balanced NPK prescription.' },
-    { title: 'Sustainable Agronomy', desc: 'Crop rotation, biofertilizers, IPM & ecological weed stewardship.' },
-    { title: 'Agroforestry & Ecology', desc: 'FAO-certified multi-tier tree-crop microclimate modeling.' },
-    { title: 'Spatial Precision Ag', desc: 'GIS mapping, satellite NDVI vegetative health tracking.' },
-  ];
+  // Group skills by category to generate dynamic pillars, with clean fallback if none
+  const categories = Array.from(new Set(skills.map((s) => s.category)));
+
+  const fieldHighlights =
+    categories.length > 0
+      ? categories.slice(0, 4).map((cat) => {
+          const catSkills = skills.filter((s) => s.category === cat);
+          const topSkillNames = catSkills.map((s) => s.name).slice(0, 3).join(', ');
+          return {
+            title: cat,
+            desc: topSkillNames || 'Specialized agronomic domain and practical fieldwork.',
+          };
+        })
+      : [
+          { title: 'Soil Science & Testing', desc: 'Physicochemical evaluation, pH, EC & balanced NPK prescription.' },
+          { title: 'Sustainable Agronomy', desc: 'Crop rotation, biofertilizers, IPM & ecological weed stewardship.' },
+          { title: 'Agroforestry & Ecology', desc: 'FAO-certified multi-tier tree-crop microclimate modeling.' },
+          { title: 'Spatial Precision Ag', desc: 'GIS mapping, satellite NDVI vegetative health tracking.' },
+        ];
 
   const rows: [label: string, value: React.ReactNode][] = [
     ['Candidate', profile.full_name],
-    ['Discipline', 'B.Sc. (Hons) Agriculture'],
-    ['Institution', currentEdu ? currentEdu.institution : 'Centurion University of Technology & Management'],
-    ['Current Standing', currentEdu ? `${currentEdu.score_label}: ${currentEdu.score}` : 'GPA: 8.03 / 10'],
+    ['Discipline', currentEdu ? currentEdu.qualification : profile.headline.split('·')[0]?.trim() || 'Agricultural Scholar'],
+    ['Institution', currentEdu ? currentEdu.institution : 'Agricultural University'],
+    ['Current Standing', currentEdu?.score ? `${currentEdu.score_label}: ${currentEdu.score}` : 'Enrolled Scholar'],
     ['Geographic Base', profile.location],
-    ['Languages', 'English (Proficient) · Telugu (Native)'],
     ['Availability', profile.open_to_work ? 'Open for Agronomy & Research Projects' : 'Enrolled Scholar'],
     [
       'Curriculum Vitae',
@@ -42,10 +62,10 @@ export function About({ profile, education }: { profile: Profile; education: Edu
           </p>
         ))}
 
-        {/* Core pillars of competence */}
+        {/* Core pillars of competence - dynamically populated from skills */}
         <div className="pt-4">
           <h4 className="font-mono text-xs font-semibold tracking-wider text-emerald-400 uppercase">
-            Core Agricultural Pillars
+            Core Competence Pillars
           </h4>
           <div className="mt-3.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {fieldHighlights.map((f) => (
@@ -69,7 +89,9 @@ export function About({ profile, education }: { profile: Profile; education: Edu
           <span className="flex items-center gap-1.5">
             <Sprout size={13} /> Researcher Dossier
           </span>
-          <span className="text-subtle">ACAD · 2024–2028</span>
+          <span className="text-subtle">
+            {currentEdu?.start_year ? `${currentEdu.start_year}–${currentEdu.end_year ?? 'PRES'}` : 'VERIFIED'}
+          </span>
         </div>
         <dl className="divide-y divide-line">
           {rows

@@ -1,38 +1,51 @@
 'use client';
 
 import { Sprout, Activity, Globe, Award, Droplets, Compass } from 'lucide-react';
+import type { Portfolio } from '@/lib/types';
 
-export function AgritechTelemetry() {
+export function AgritechTelemetry({ data }: { data?: Portfolio }) {
+  const projectsCount = data?.projects?.length ?? 4;
+  const skillsCount = data?.skills?.length ?? 16;
+  const certsCount = data?.certifications?.length ?? 3;
+  const expCount = data?.experiences?.filter((e) => e.kind === 'internship')?.length ?? 2;
+
+  // Derive dynamic focus from headline or top skill category
+  const primaryFocus =
+    data?.profile?.headline?.split('·')[0]?.trim() || 'Sustainable Agronomy';
+
+  const latestCert = data?.certifications?.[0]?.issuer?.split('—')[0]?.trim() || 'FAO Certified';
+  const latestCertTitle = data?.certifications?.[0]?.title?.split('—')[0]?.trim() || 'Agroforestry Transformation';
+
   const metrics = [
     {
       icon: Sprout,
-      label: 'Focus Area',
-      value: 'Sustainable Agronomy',
-      sub: 'Agroecology & Crop Science',
+      label: 'Active Domain',
+      value: primaryFocus.length > 24 ? primaryFocus.slice(0, 24) + '...' : primaryFocus,
+      sub: `${skillsCount} Verified Competencies`,
       color: 'text-emerald-400',
       bg: 'bg-emerald-500/10 border-emerald-500/20',
     },
     {
       icon: Activity,
-      label: 'Soil Testing Lab',
-      value: 'NPK & pH Profiling',
-      sub: '120+ Plot Samples Tested',
+      label: 'Field Research',
+      value: `${projectsCount} Agronomic Studies`,
+      sub: `${expCount} Fieldwork & Lab Positions`,
       color: 'text-amber-400',
       bg: 'bg-amber-500/10 border-amber-500/20',
     },
     {
       icon: Globe,
-      label: 'Spatial Agtech',
-      value: 'GIS & NDVI Mapping',
-      sub: 'Multispectral Vegetative Health',
+      label: 'Core Specialization',
+      value: data?.skills?.[0]?.category || 'Soil Science & Testing',
+      sub: `${data?.skills?.[0]?.name || 'NPK Profiling'} & Diagnostics`,
       color: 'text-teal-400',
       bg: 'bg-teal-500/10 border-teal-500/20',
     },
     {
       icon: Award,
-      label: 'Global Credential',
-      value: 'FAO Certified',
-      sub: 'Agroforestry Agrifood Systems',
+      label: 'Recognitions',
+      value: `${certsCount} Credentials`,
+      sub: latestCert,
       color: 'text-emerald-300',
       bg: 'bg-emerald-400/10 border-emerald-400/20',
     },
@@ -51,12 +64,14 @@ export function AgritechTelemetry() {
           </span>
         </div>
         <div className="flex items-center gap-4 text-xs font-mono text-subtle">
-          <span className="hidden sm:inline-flex items-center gap-1">
-            <Compass size={13} className="text-emerald-400" />
-            18.80° N, 84.42° E
-          </span>
+          {data?.profile?.location && (
+            <span className="hidden sm:inline-flex items-center gap-1">
+              <Compass size={13} className="text-emerald-400" />
+              {data.profile.location}
+            </span>
+          )}
           <span className="inline-flex items-center gap-1 text-emerald-400/80">
-            <Droplets size={13} /> Soil Moisture: Optimal
+            <Droplets size={13} /> Status: Active Fieldwork
           </span>
         </div>
       </div>
@@ -69,13 +84,19 @@ export function AgritechTelemetry() {
               key={item.label}
               className={`group flex items-start gap-3.5 rounded-xl border p-3.5 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/50 hover:bg-ink-850/90 hover:shadow-[0_8px_24px_-6px_rgba(16,185,129,0.3)] cursor-default ${item.bg}`}
             >
-              <div className={`mt-0.5 rounded-lg p-2 ${item.color} bg-ink-950/80 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6`}>
-                <Icon size={18} />
+              <div className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg bg-ink-950/70 border border-emerald-500/20 text-emerald-400 transition-transform duration-300 group-hover:scale-110">
+                <Icon size={18} className={item.color} />
               </div>
               <div className="min-w-0 flex-1">
-                <p className="font-mono text-[11px] tracking-wider text-subtle uppercase transition-colors group-hover:text-emerald-400/90">{item.label}</p>
-                <p className="mt-0.5 truncate text-sm font-semibold text-fg transition-colors group-hover:text-emerald-300">{item.value}</p>
-                <p className="truncate text-xs text-muted">{item.sub}</p>
+                <p className="font-mono text-[10px] tracking-wider text-muted uppercase">
+                  {item.label}
+                </p>
+                <p className="mt-0.5 truncate text-sm font-semibold text-fg transition-colors group-hover:text-emerald-300">
+                  {item.value}
+                </p>
+                <p className="mt-0.5 truncate text-xs text-subtle">
+                  {item.sub}
+                </p>
               </div>
             </div>
           );

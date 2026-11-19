@@ -40,7 +40,7 @@ export async function generateMetadata(): Promise<Metadata> {
 function SectionBody({ sectionKey, data }: { sectionKey: SectionKey; data: Portfolio }) {
   switch (sectionKey) {
     case 'about':
-      return <About profile={data.profile} education={data.education} />;
+      return <About profile={data.profile} education={data.education} skills={data.skills} />;
     case 'experience':
       return <ExperienceTimeline items={data.experiences.filter((e) => e.kind === 'internship')} />;
     case 'projects':
@@ -86,6 +86,7 @@ export default async function HomePage() {
           stats={getStats(data)}
           primaryHref={primaryHref}
           contactHref={keys.includes('contact') ? '#contact' : null}
+          portfolio={data}
         />
         {sections.map((section, i) => (
           <Section

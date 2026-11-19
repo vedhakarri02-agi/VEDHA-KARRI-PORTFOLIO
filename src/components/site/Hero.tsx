@@ -2,7 +2,7 @@ import { ArrowDown, Download, Mail, MapPin, Sprout, Award, BookOpen } from 'luci
 import Image from 'next/image';
 import type { Stat } from '@/lib/content';
 import { initials } from '@/lib/format';
-import type { Profile } from '@/lib/types';
+import type { Portfolio, Profile } from '@/lib/types';
 import { BlueprintArt } from './BlueprintArt';
 import { GitHubIcon, LinkedInIcon } from './icons';
 import { VantaHeroBackground } from './VantaHeroBackground';
@@ -15,9 +15,10 @@ type Props = {
   /** Anchor of the first "work" section for the main call to action. */
   primaryHref: string | null;
   contactHref: string | null;
+  portfolio?: Portfolio;
 };
 
-export function Hero({ profile, stats, primaryHref, contactHref }: Props) {
+export function Hero({ profile, stats, primaryHref, contactHref, portfolio }: Props) {
   const [first, ...rest] = profile.full_name.trim().split(/\s+/);
 
   return (
@@ -39,7 +40,10 @@ export function Hero({ profile, stats, primaryHref, contactHref }: Props) {
               </span>
             )}
             <span className="chip border-line bg-ink-900/60 text-muted hidden sm:inline-flex">
-              <Sprout size={14} className="text-emerald-400" /> B.Sc. (Hons) Agriculture
+              <Sprout size={14} className="text-emerald-400" />
+              {portfolio?.education?.[0]?.qualification ||
+                profile.headline.split('·')[0]?.trim() ||
+                'Agricultural Scholar'}
             </span>
           </div>
 
@@ -111,9 +115,11 @@ export function Hero({ profile, stats, primaryHref, contactHref }: Props) {
                 <Mail size={18} />
               </a>
             )}
-            <span className="font-mono text-xs text-subtle pl-2">
-              vedhakarri25@gmail.com
-            </span>
+            {profile.email && (
+              <span className="font-mono text-xs text-subtle pl-2">
+                {profile.email}
+              </span>
+            )}
           </div>
         </div>
 
@@ -122,7 +128,7 @@ export function Hero({ profile, stats, primaryHref, contactHref }: Props) {
 
       {/* Real-time Agricultural Telemetry Dashboard Bar */}
       <div className="container-x relative z-10">
-        <AgritechTelemetry />
+        <AgritechTelemetry data={portfolio} />
       </div>
 
       {stats.length > 0 && (
@@ -156,7 +162,7 @@ function PortraitFrame({ profile }: { profile: Profile }) {
       <div className="absolute -top-8 right-6 left-6 flex items-center gap-2 font-mono text-[10px] text-emerald-400/60" aria-hidden="true">
         <span className="h-3 w-px bg-emerald-500/60" />
         <span className="h-px flex-1 bg-emerald-500/30" />
-        <span>PARALAKHEMUNDI · CAMPUS</span>
+        <span>{profile.location ? profile.location.split(',')[0]?.trim().toUpperCase() + ' · BASE' : 'FIELD STATION'}</span>
         <span className="h-px flex-1 bg-emerald-500/30" />
         <span className="h-3 w-px bg-emerald-500/60" />
       </div>
@@ -179,7 +185,7 @@ function PortraitFrame({ profile }: { profile: Profile }) {
       </div>
 
       <div className="absolute -bottom-4 left-6 rounded-md border border-emerald-500/30 bg-ink-900 px-3 py-1.5 font-mono text-[10px] tracking-widest text-emerald-300 uppercase shadow-lg">
-        PLT · {profile.full_name} · B.Sc.(Ag)
+        SCHOLAR · {profile.full_name.toUpperCase()}
       </div>
     </div>
   );
