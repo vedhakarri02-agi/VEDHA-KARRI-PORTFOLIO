@@ -273,6 +273,168 @@
   }
 
   /* ------------------------------------------------------------------
+     Form Controls (Inputs, Labels, Alerts, Switches, Errors)
+     ------------------------------------------------------------------ */
+  .label {
+    display: block;
+    margin-bottom: 0.45rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-muted);
+    letter-spacing: 0.01em;
+  }
+
+  .input {
+    display: block;
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.035);
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-fg);
+    backdrop-filter: blur(12px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .input::placeholder {
+    color: var(--color-subtle);
+  }
+  .input:hover {
+    border-color: rgba(52, 211, 153, 0.35);
+    background: rgba(255, 255, 255, 0.05);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--color-accent-soft);
+    background: rgba(16, 185, 129, 0.05);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  }
+  .input[aria-invalid='true'] {
+    border-color: var(--color-danger);
+    box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2);
+  }
+  .input-sm {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.8125rem;
+    border-radius: 10px;
+  }
+  textarea.input {
+    min-height: 7rem;
+    resize: vertical;
+    line-height: 1.6;
+  }
+  select.input {
+    appearance: none;
+    padding-right: 2.25rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2334d399' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+  }
+  select.input option {
+    background: #061109;
+    color: #f4fbf6;
+  }
+  input[type='month'].input::-webkit-calendar-picker-indicator {
+    filter: invert(0.85) sepia(1) saturate(5) hue-rotate(90deg);
+    cursor: pointer;
+  }
+
+  .field-error {
+    margin-top: 0.35rem;
+    color: var(--color-danger);
+    font-size: 0.8125rem;
+  }
+  .help {
+    margin-top: 0.35rem;
+    color: var(--color-subtle);
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.85rem 1.15rem;
+    border: 1px solid;
+    border-radius: 14px;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    backdrop-filter: blur(12px);
+  }
+  .alert > svg {
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .alert-error {
+    border-color: rgba(248, 113, 113, 0.35);
+    background: rgba(248, 113, 113, 0.1);
+    color: #fecaca;
+  }
+  .alert-success {
+    border-color: rgba(52, 211, 153, 0.35);
+    background: rgba(16, 185, 129, 0.12);
+    color: #d1fae5;
+  }
+  .alert-warning {
+    border-color: rgba(251, 191, 36, 0.35);
+    background: rgba(251, 191, 36, 0.1);
+    color: #fde68a;
+  }
+
+  /* Toggle switch built on a checkbox */
+  .switch {
+    position: relative;
+    flex-shrink: 0;
+    width: 2.6rem;
+    height: 1.45rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .switch::after {
+    content: '';
+    position: absolute;
+    top: 0.18rem;
+    left: 0.18rem;
+    width: 0.95rem;
+    height: 0.95rem;
+    border-radius: 9999px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .switch:checked {
+    background: #10b981;
+    border-color: #34d399;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+  }
+  .switch:checked::after {
+    transform: translateX(1.15rem);
+  }
+
+  .trap {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .spin {
+    animation: spin 1s linear infinite;
+  }
+
+  .draw-lines [pathLength] {
+    stroke-dasharray: 1;
+    animation: draw 1.8s ease-out both;
+  }
+
+  /* ------------------------------------------------------------------
      Micro-animations
      ------------------------------------------------------------------ */
   .pulse-dot {
@@ -333,5 +495,20 @@
   }
   100% {
     transform: translateY(-12px);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }
