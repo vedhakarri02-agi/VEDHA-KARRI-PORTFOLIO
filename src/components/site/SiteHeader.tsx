@@ -1,14 +1,13 @@
 'use client';
 
-import { Download, Menu, X, Sprout } from 'lucide-react';
-import Link from 'next/link';
+import { Download, Menu, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export type NavLink = { href: string; label: string };
 
 type Props = {
-  name: string;
-  monogram: string;
+  name?: string;
+  monogram?: string;
   links: NavLink[];
   resumeUrl: string;
 };
@@ -38,29 +37,19 @@ export function SiteHeader({ name, monogram, links, resumeUrl }: Props) {
       }`}
     >
       <div className="container-x flex h-16 items-center justify-between gap-4">
-        <Link href="/" className="group flex items-center gap-3" onClick={() => setOpen(false)}>
-          <span className="relative grid size-9 place-items-center rounded-lg border border-emerald-500/40 bg-emerald-500/10 font-mono text-sm font-semibold text-emerald-300 transition-colors group-hover:border-emerald-400 group-hover:bg-emerald-500/20">
-            {monogram}
-          </span>
-          <div className="flex flex-col">
-            <span className="font-display text-base font-semibold tracking-tight text-fg group-hover:text-emerald-300 transition-colors">{name}</span>
-            <span className="font-mono text-[10px] text-emerald-400/80 -mt-0.5 hidden sm:inline">B.Sc. (Hons) Agriculture</span>
-          </div>
-        </Link>
-
-        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-1.5 lg:flex">
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="rounded-full px-3 py-1.5 text-sm text-muted transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+              className="rounded-full px-3.5 py-1.5 text-sm text-muted transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
             >
               {link.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3 ml-auto">
           {resumeUrl && (
             <a href={resumeUrl} target="_blank" rel="noopener" className="btn btn-outline btn-sm hidden sm:inline-flex hover:border-emerald-500/40 hover:text-emerald-300">
               <Download size={14} /> CV
