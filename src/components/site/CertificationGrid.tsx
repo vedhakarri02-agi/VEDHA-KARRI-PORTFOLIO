@@ -1,4 +1,4 @@
-import { Award, ExternalLink, FileText, CheckCircle2, Globe, Sparkles } from 'lucide-react';
+import { Award, ExternalLink, FileText, Globe, Sparkles } from 'lucide-react';
 import type { Certification } from '@/lib/types';
 
 export function CertificationGrid({ items }: { items: Certification[] }) {

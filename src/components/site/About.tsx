@@ -1,4 +1,4 @@
-import { Download, Sprout, CheckCircle2, Award, BookOpen, MapPin, Sparkles } from 'lucide-react';
+import { Download, Sprout, CheckCircle2, Sparkles } from 'lucide-react';
 import { paragraphs } from '@/lib/format';
 import type { Education, Profile, SectionSetting, Skill } from '@/lib/types';
 

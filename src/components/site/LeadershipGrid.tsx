@@ -1,6 +1,5 @@
 import { formatDateRange, formatDuration } from '@/lib/format';
 import type { Experience } from '@/lib/types';
-import { Users, Sparkles } from 'lucide-react';
 
 export function LeadershipGrid({ items }: { items: Experience[] }) {
   return (

@@ -1,4 +1,4 @@
-import { GraduationCap, Award } from 'lucide-react';
+import { GraduationCap } from 'lucide-react';
 import { formatYears } from '@/lib/format';
 import type { Education } from '@/lib/types';
 

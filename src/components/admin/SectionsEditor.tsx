@@ -13,10 +13,10 @@ import {
   Trophy,
   X,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { fetchSettings, saveSections } from '@/lib/admin-api';
-import { SECTION_DEFAULTS, SECTION_LABELS, sectionLabel, THEMES, extractThemeColor } from '@/lib/site';
-import type { CustomModuleItem, SectionSetting, ThemeColor } from '@/lib/types';
+import { SECTION_DEFAULTS, sectionLabel, THEMES, extractThemeColor } from '@/lib/site';
+import type { SectionSetting, ThemeColor } from '@/lib/types';
 import { useAdmin, useAdminQuery, useUnsavedChanges } from './AdminContext';
 import { useToast } from './Toast';
 import { PageHeader, QueryStatus } from './ui';
@@ -58,12 +58,17 @@ export function SectionsForm({ initial }: { initial: SectionSetting[] }) {
   const dirty = useMemo(() => JSON.stringify(sections) !== JSON.stringify(baseline), [sections, baseline]);
   useUnsavedChanges(dirty);
 
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.dataset.theme = currentTheme;
+      try {
+        localStorage.setItem('portfolio-theme', currentTheme);
+      } catch {}
+    }
+  }, [currentTheme]);
+
   const handleThemeChange = (themeId: ThemeColor) => {
     setCurrentTheme(themeId);
-    document.documentElement.dataset.theme = themeId;
-    try {
-      localStorage.setItem('portfolio-theme', themeId);
-    } catch {}
     setSections((list) => {
       const updated = list.map((s, idx) => (idx === 0 ? { ...s, theme: themeId } : s));
       const hasThemeItem = updated.some((s) => s.key === '__theme');

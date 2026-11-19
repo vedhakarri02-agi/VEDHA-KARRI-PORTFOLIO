@@ -6,23 +6,32 @@ import { THEMES } from '@/lib/site';
 import type { ThemeColor } from '@/lib/types';
 
 export function ThemeSwitcher({ initialTheme = 'emerald' }: { initialTheme?: ThemeColor }) {
-  const [currentTheme, setCurrentTheme] = useState<ThemeColor>(initialTheme);
+  const [currentTheme, setCurrentTheme] = useState<ThemeColor>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('portfolio-theme') as ThemeColor;
+        if (saved && THEMES.some((t) => t.id === saved)) {
+          return saved;
+        }
+      } catch {
+        // Ignore localStorage access restrictions
+      }
+    }
+    return initialTheme;
+  });
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem('portfolio-theme') as ThemeColor;
-      if (saved && THEMES.some((t) => t.id === saved)) {
-        setCurrentTheme(saved);
-        document.documentElement.dataset.theme = saved;
-      } else if (initialTheme) {
-        document.documentElement.dataset.theme = initialTheme;
+    if (typeof document !== 'undefined') {
+      document.documentElement.dataset.theme = currentTheme;
+      try {
+        localStorage.setItem('portfolio-theme', currentTheme);
+      } catch {
+        // Ignore localStorage restrictions
       }
-    } catch {
-      // Ignore localStorage security exceptions
     }
-  }, [initialTheme]);
+  }, [currentTheme]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -40,12 +49,6 @@ export function ThemeSwitcher({ initialTheme = 'emerald' }: { initialTheme?: The
 
   const selectTheme = (themeId: ThemeColor) => {
     setCurrentTheme(themeId);
-    document.documentElement.dataset.theme = themeId;
-    try {
-      localStorage.setItem('portfolio-theme', themeId);
-    } catch {
-      // Ignore
-    }
     setIsOpen(false);
   };
 

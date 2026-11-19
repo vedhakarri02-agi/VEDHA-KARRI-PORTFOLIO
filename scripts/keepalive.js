@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports, @typescript-eslint/no-unused-vars */
 /**
  * Supabase Anti-Sleep Keep-Alive Script
  *

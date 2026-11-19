@@ -17,8 +17,8 @@ import { SmoothScroll } from '@/components/site/SmoothScroll';
 import { BotanicalParticles } from '@/components/site/BotanicalParticles';
 import { getPortfolio, getStats, visibleSections } from '@/lib/content';
 import { initials } from '@/lib/format';
-import { SECTION_LABELS, getSiteUrl, sectionIntro, sectionLabel, sectionTitle } from '@/lib/site';
-import type { Portfolio, SectionKey, SectionSetting } from '@/lib/types';
+import { getSiteUrl, sectionIntro, sectionLabel, sectionTitle } from '@/lib/site';
+import type { Portfolio, SectionSetting } from '@/lib/types';
 import { AchievementsGrid } from '@/components/site/AchievementsGrid';
 import { ThemeSwitcher } from '@/components/site/ThemeSwitcher';
 
@@ -182,44 +182,46 @@ export default async function HomePage() {
   };
 
   return (
-    <SmoothScroll>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="blueprint-bg" aria-hidden="true" />
-      <BotanicalParticles />
-      <SiteHeader
-        name={data.profile.full_name}
-        monogram={initials(data.profile.full_name)}
-        links={sections.map((s) => ({ href: `#${s.key}`, label: sectionLabel(s.key) }))}
-        resumeUrl={data.profile.resume_url}
-      />
-      <main id="top">
-        <Hero
-          profile={data.profile}
-          stats={getStats(data)}
-          primaryHref={primaryHref}
-          contactHref={keys.includes('contact') ? '#contact' : null}
-          portfolio={data}
+      <SmoothScroll>
+        <div className="blueprint-bg" aria-hidden="true" />
+        <BotanicalParticles />
+        <SiteHeader
+          name={data.profile.full_name}
+          monogram={initials(data.profile.full_name)}
+          links={sections.map((s) => ({ href: `#${s.key}`, label: sectionLabel(s.key) }))}
+          resumeUrl={data.profile.resume_url}
         />
-        {sections.map((section, i) => (
-          <Section
-            key={section.key}
-            id={section.key}
-            index={i + 1}
-            label={sectionLabel(section.key)}
-            title={sectionTitle(section)}
-            intro={sectionIntro(section)}
-          >
-            <SectionBody section={section} data={data} />
-          </Section>
-        ))}
-      </main>
-      <SiteFooter name={data.profile.full_name} revision={data.settings.content_version} profile={data.profile} />
-      <ThemeSwitcher initialTheme={data.settings.theme_color} />
-      <LiveRefresh />
-      <DevNotice source={source} error={error} />
-    </SmoothScroll>
+        <main id="top">
+          <Hero
+            profile={data.profile}
+            stats={getStats(data)}
+            primaryHref={primaryHref}
+            contactHref={keys.includes('contact') ? '#contact' : null}
+            portfolio={data}
+          />
+          {sections.map((section, i) => (
+            <Section
+              key={section.key}
+              id={section.key}
+              index={i + 1}
+              label={sectionLabel(section.key)}
+              title={sectionTitle(section)}
+              intro={sectionIntro(section)}
+            >
+              <SectionBody section={section} data={data} />
+            </Section>
+          ))}
+        </main>
+        <SiteFooter name={data.profile.full_name} revision={data.settings.content_version} profile={data.profile} />
+        <ThemeSwitcher initialTheme={data.settings.theme_color} />
+        <LiveRefresh />
+        <DevNotice source={source} error={error} />
+      </SmoothScroll>
+    </>
   );
 }

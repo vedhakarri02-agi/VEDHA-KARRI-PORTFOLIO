@@ -1,4 +1,4 @@
-import { Trophy, ExternalLink, Calendar, Building2, Sparkles } from 'lucide-react';
+import { Trophy, ExternalLink, Calendar, Building2 } from 'lucide-react';
 import type { CustomModuleItem } from '@/lib/types';
 
 export function AchievementsGrid({

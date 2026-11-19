@@ -1,4 +1,4 @@
-import { ArrowUpRight, Sprout, Sparkles } from 'lucide-react';
+import { ArrowUpRight, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { pad2 } from '@/lib/format';

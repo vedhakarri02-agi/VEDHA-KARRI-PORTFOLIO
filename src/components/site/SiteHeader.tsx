@@ -12,7 +12,7 @@ type Props = {
   resumeUrl: string;
 };
 
-export function SiteHeader({ name, monogram, links, resumeUrl }: Props) {
+export function SiteHeader({ links, resumeUrl }: Props) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 

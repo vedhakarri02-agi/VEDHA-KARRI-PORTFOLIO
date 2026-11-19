@@ -1,6 +1,6 @@
 'use client';
 
-import { Calendar, ExternalLink, Loader2, Plus, Save, Trash2, Trophy } from 'lucide-react';
+import { Loader2, Plus, Save, Trash2, Trophy } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { fetchSettings, saveSections } from '@/lib/admin-api';
 import type { CustomModuleItem, SectionSetting } from '@/lib/types';

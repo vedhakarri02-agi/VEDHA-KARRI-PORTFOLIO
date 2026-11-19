@@ -1,7 +1,5 @@
 'use client';
 
-import { useId } from 'react';
-
 /**
  * Ambient botanical spore / bio-luminescent particles.
  * Pure lightweight CSS animations with minimal CPU/GPU overhead.

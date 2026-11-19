@@ -27,7 +27,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { countUnread } from '@/lib/admin-api';
 import { THEMES } from '@/lib/site';
-import type { ThemeColor } from '@/lib/types';
 import { getBrowserSupabase } from '@/lib/supabase/browser';
 import { AdminContext } from './AdminContext';
 import { PreviewPane } from './PreviewPane';

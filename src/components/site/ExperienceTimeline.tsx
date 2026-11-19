@@ -1,4 +1,4 @@
-import { ArrowUpRight, Building2, Laptop, MapPin, Sprout } from 'lucide-react';
+import { ArrowUpRight, Laptop, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { formatDateRange, formatDuration } from '@/lib/format';
 import type { Experience } from '@/lib/types';

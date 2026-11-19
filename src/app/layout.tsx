@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className="min-h-dvh">{children}</body>
+      <body className="min-h-dvh" suppressHydrationWarning>{children}</body>
     </html>
   );
 }

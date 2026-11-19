@@ -71,12 +71,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   };
 
   return (
-    <SmoothScroll>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
       />
-      <div className="blueprint-bg" aria-hidden="true" />
+      <SmoothScroll>
+        <div className="blueprint-bg" aria-hidden="true" />
       <SiteHeader
         name={data.profile.full_name}
         monogram={initials(data.profile.full_name)}
@@ -193,5 +194,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <ThemeSwitcher initialTheme={data.settings.theme_color} />
       <LiveRefresh />
     </SmoothScroll>
-  );
+  </>
+);
 }
