@@ -2,7 +2,6 @@ import {
   Code2,
   Cpu,
   DraftingCompass,
-  Gauge,
   Sparkles,
   Users,
   Wrench,
@@ -43,49 +42,49 @@ function group(skills: Skill[]): [string, Skill[]][] {
 }
 
 export function SkillsGrid({ skills }: { skills: Skill[] }) {
+  const grouped = group(skills);
+
   return (
-    <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-2">
-      {group(skills).map(([category, items]) => {
+    <div className="grid gap-8 md:grid-cols-2">
+      {grouped.map(([category, items]) => {
         const Icon = iconFor(category);
-        const rated = items.filter((s) => s.level !== null);
-        const plain = items.filter((s) => s.level === null);
+
         return (
-          <section key={category} aria-label={category} className="bp-card bp-card-hover group p-6 border-emerald-500/20 bg-ink-900/70">
-            <header className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6">
-                <Icon size={19} />
+          <section
+            key={category}
+            aria-label={category}
+            className="bp-card bp-card-hover group flex flex-col p-8 sm:p-9 rounded-[2rem] border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-white/[0.01] backdrop-blur-2xl"
+          >
+            <header className="flex items-center gap-4 border-b border-white/[0.06] pb-6">
+              <span className="grid size-12 place-items-center rounded-2xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 shadow-[0_0_24px_rgba(16,185,129,0.15)]">
+                <Icon size={22} />
               </span>
-              <h3 className="font-display text-lg font-semibold tracking-tight text-fg group-hover:text-emerald-300 transition-colors">{category}</h3>
+              <div>
+                <h3 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-fg group-hover:text-emerald-300 transition-colors">
+                  {category}
+                </h3>
+                <p className="font-mono text-xs text-muted/80 mt-0.5">
+                  {items.length} {items.length === 1 ? 'Competency' : 'Competencies'}
+                </p>
+              </div>
             </header>
 
-            {rated.length > 0 && (
-              <ul className="mt-5 space-y-3.5">
-                {rated.map((skill) => (
-                  <li key={skill.id} className="group/item">
-                    <div className="flex items-baseline justify-between text-sm">
-                      <span className="text-fg/90 transition-colors group-hover/item:text-emerald-300">{skill.name}</span>
-                      <span className="font-mono text-xs text-emerald-400/80 transition-colors group-hover/item:text-emerald-300 font-semibold">{skill.level}%</span>
-                    </div>
-                    <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
-                      <div
-                        className="h-full rounded-full bg-linear-to-r from-emerald-600 via-emerald-500 to-teal-400 transition-all duration-500 group-hover/item:brightness-125 group-hover/item:shadow-[0_0_8px_rgba(52,211,153,0.8)]"
-                        style={{ width: `${skill.level}%` }}
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {plain.length > 0 && (
-              <ul className="mt-5 flex flex-wrap gap-2">
-                {plain.map((skill) => (
-                  <li key={skill.id} className="chip border-emerald-500/20 bg-ink-850/80 text-muted">
-                    {skill.name}
-                  </li>
-                ))}
-              </ul>
-            )}
+            <div className="mt-6 flex flex-wrap gap-2.5">
+              {items.map((s) => (
+                <div
+                  key={s.id}
+                  className="group/item flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.02] px-3.5 py-2 text-sm text-fg/90 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:bg-emerald-500/10 hover:text-emerald-300"
+                >
+                  <span className="size-1.5 rounded-full bg-emerald-400/80 transition-colors group-hover/item:bg-emerald-300" />
+                  <span className="font-medium">{s.name}</span>
+                  {s.level !== null && (
+                    <span className="ml-1 font-mono text-[11px] text-muted group-hover/item:text-emerald-300/80">
+                      {s.level}%
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </section>
         );
       })}

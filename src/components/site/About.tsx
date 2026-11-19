@@ -1,4 +1,4 @@
-import { Download, Sprout, CheckCircle2, Award, BookOpen, MapPin } from 'lucide-react';
+import { Download, Sprout, CheckCircle2, Award, BookOpen, MapPin, Sparkles } from 'lucide-react';
 import { paragraphs } from '@/lib/format';
 import type { Education, Profile, Skill } from '@/lib/types';
 
@@ -37,15 +37,15 @@ export function About({
   const rows: [label: string, value: React.ReactNode][] = [
     ['Candidate', profile.full_name],
     ['Discipline', currentEdu ? currentEdu.qualification : profile.headline.split('·')[0]?.trim() || 'Agricultural Scholar'],
-    ['Institution', currentEdu ? currentEdu.institution : 'Agricultural University'],
-    ['Current Standing', currentEdu?.score ? `${currentEdu.score_label}: ${currentEdu.score}` : 'Enrolled Scholar'],
+    ['Institution', currentEdu ? currentEdu.institution : 'Centurion University of Technology & Management'],
+    ['Academic Standing', currentEdu?.score ? `${currentEdu.score_label}: ${currentEdu.score}` : 'GPA: 8.03 / 10'],
     ['Geographic Base', profile.location],
     ['Availability', profile.open_to_work ? 'Open for Agronomy & Research Projects' : 'Enrolled Scholar'],
     [
       'Curriculum Vitae',
       profile.resume_url ? (
-        <a href={profile.resume_url} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-medium">
-          <Download size={14} /> Download PDF
+        <a href={profile.resume_url} target="_blank" rel="noopener" className="inline-flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-semibold">
+          <Download size={14} /> Download CV (PDF)
         </a>
       ) : (
         <span className="text-subtle font-mono text-xs">Available on request</span>
@@ -54,29 +54,29 @@ export function About({
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.35fr_1fr] lg:gap-14 items-start">
-      <div className="space-y-6 text-lg leading-relaxed text-pretty text-muted">
+    <div className="grid grid-cols-1 gap-14 lg:grid-cols-[1.35fr_1fr] lg:gap-16 items-start">
+      <div className="space-y-7 text-lg sm:text-xl leading-relaxed text-pretty text-muted/90 font-normal">
         {paragraphs(profile.about).map((p, i) => (
-          <p key={i} className={i === 0 ? 'text-fg font-normal' : undefined}>
+          <p key={i} className={i === 0 ? 'text-fg font-normal leading-relaxed' : undefined}>
             {p}
           </p>
         ))}
 
         {/* Core pillars of competence - dynamically populated from skills */}
-        <div className="pt-4">
-          <h4 className="font-mono text-xs font-semibold tracking-wider text-emerald-400 uppercase">
-            Core Competence Pillars
+        <div className="pt-6">
+          <h4 className="flex items-center gap-2 font-mono text-xs font-semibold tracking-wider text-emerald-400 uppercase">
+            <Sparkles size={14} /> Core Competence Pillars
           </h4>
-          <div className="mt-3.5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
             {fieldHighlights.map((f) => (
               <div
                 key={f.title}
-                className="group flex items-start gap-2.5 rounded-xl border border-line bg-ink-900/60 p-3 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:bg-ink-850/90 hover:shadow-[0_4px_16px_-4px_rgba(16,185,129,0.25)]"
+                className="group flex items-start gap-3.5 rounded-2xl border border-white/[0.08] bg-white/[0.025] p-4 sm:p-5 backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-emerald-500/40 hover:bg-emerald-500/[0.08] hover:shadow-[0_8px_24px_-6px_rgba(16,185,129,0.25)]"
               >
-                <CheckCircle2 size={16} className="mt-0.5 text-emerald-400 shrink-0 transition-transform duration-300 group-hover:scale-125 group-hover:text-emerald-300" />
+                <CheckCircle2 size={18} className="mt-0.5 text-emerald-400 shrink-0 transition-transform duration-300 group-hover:scale-125 group-hover:text-emerald-300" />
                 <div>
-                  <p className="text-sm font-semibold text-fg transition-colors group-hover:text-emerald-300">{f.title}</p>
-                  <p className="text-xs text-subtle">{f.desc}</p>
+                  <p className="text-base font-semibold text-fg transition-colors group-hover:text-emerald-300">{f.title}</p>
+                  <p className="mt-1 text-xs text-subtle leading-relaxed">{f.desc}</p>
                 </div>
               </div>
             ))}
@@ -84,22 +84,23 @@ export function About({
         </div>
       </div>
 
-      <div className="bp-card self-start overflow-hidden border-emerald-500/20 bg-ink-900/80 backdrop-blur-md">
-        <div className="flex items-center justify-between border-b border-line px-5 py-3 font-mono text-[11px] tracking-[0.18em] text-emerald-400 uppercase">
-          <span className="flex items-center gap-1.5">
-            <Sprout size={13} /> Researcher Dossier
+      {/* Modern Dossier Card */}
+      <div className="bp-card self-start overflow-hidden rounded-[2rem] border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-white/[0.01] backdrop-blur-2xl p-7 sm:p-8">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4 font-mono text-xs tracking-wider text-emerald-400 uppercase">
+          <span className="flex items-center gap-2 font-semibold">
+            <Sprout size={16} /> Researcher Dossier
           </span>
-          <span className="text-subtle">
+          <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] text-emerald-300">
             {currentEdu?.start_year ? `${currentEdu.start_year}–${currentEdu.end_year ?? 'PRES'}` : 'VERIFIED'}
           </span>
         </div>
-        <dl className="divide-y divide-line">
+        <dl className="divide-y divide-white/[0.06]">
           {rows
             .filter(([, value]) => value)
             .map(([label, value]) => (
-              <div key={label} className="grid grid-cols-[7rem_1fr] gap-3 px-5 py-3.5 text-sm">
-                <dt className="font-mono text-[11px] tracking-[0.12em] text-subtle uppercase">{label}</dt>
-                <dd className="text-fg/90">{value}</dd>
+              <div key={label} className="grid grid-cols-[8.5rem_1fr] gap-3 py-4 text-sm sm:text-base">
+                <dt className="font-mono text-xs tracking-wider text-subtle uppercase">{label}</dt>
+                <dd className="text-fg/90 font-medium">{value}</dd>
               </div>
             ))}
         </dl>

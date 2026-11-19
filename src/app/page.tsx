@@ -45,9 +45,14 @@ function SectionBody({ sectionKey, data }: { sectionKey: SectionKey; data: Portf
       return <ExperienceTimeline items={data.experiences.filter((e) => e.kind === 'internship')} />;
     case 'projects':
       return (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-8 md:grid-cols-2">
           {data.projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} index={i} />
+            <ProjectCard
+              key={project.id}
+              project={project}
+              index={i}
+              className={i === 0 ? 'md:col-span-2' : ''}
+            />
           ))}
         </div>
       );
