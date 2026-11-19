@@ -122,17 +122,18 @@ export const getPortfolio = cache(async (): Promise<PortfolioResult> => {
 
 /** Sections that are switched on in the admin and actually have something to show. */
 export function visibleSections(data: Portfolio): SectionSetting[] {
-  const hasContent: Record<SectionSetting['key'], boolean> = {
+  const hasContent: Record<string, boolean> = {
     about: Boolean(data.profile.about.trim()),
     experience: data.experiences.some((e) => e.kind === 'internship'),
     projects: data.projects.length > 0,
     skills: data.skills.length > 0,
     certifications: data.certifications.length > 0,
+    achievements: true,
     education: data.education.length > 0,
     leadership: data.experiences.some((e) => e.kind === 'leadership'),
     contact: true,
   };
-  return data.settings.sections.filter((s) => s.visible && hasContent[s.key]);
+  return data.settings.sections.filter((s) => s.visible && (hasContent[s.key] ?? true));
 }
 
 export type Stat = { value: string; label: string };

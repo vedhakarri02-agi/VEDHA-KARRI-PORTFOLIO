@@ -1,7 +1,7 @@
 // Shapes of the rows stored in Supabase (see supabase/schema.sql).
 // Dates are ISO strings ('YYYY-MM-DD'); month-precision fields always use the 1st of the month.
 
-export type SectionKey =
+export type StandardSectionKey =
   | 'about'
   | 'experience'
   | 'projects'
@@ -9,7 +9,22 @@ export type SectionKey =
   | 'certifications'
   | 'education'
   | 'leadership'
+  | 'achievements'
   | 'contact';
+
+export type SectionKey = StandardSectionKey | (string & {});
+
+export type CustomModuleItem = {
+  id: string;
+  title: string;
+  subtitle?: string;
+  date?: string;
+  description?: string;
+  link?: string;
+  visible: boolean;
+};
+
+export type FieldVisibility = Record<string, boolean>;
 
 export type SectionSetting = {
   key: SectionKey;
@@ -17,6 +32,12 @@ export type SectionSetting = {
   /** Optional custom heading/intro; the defaults in site.ts are used when empty. */
   title?: string;
   intro?: string;
+  /** Custom items / achievements for custom or dedicated modules */
+  items?: CustomModuleItem[];
+  /** Field visibility switches within sections (e.g. Candidate, GPA, Location, CV) */
+  fields_visibility?: FieldVisibility;
+  /** Custom competence pillars / highlights in About */
+  custom_pillars?: CustomModuleItem[];
 };
 
 export type Profile = {

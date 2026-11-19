@@ -17,8 +17,9 @@ import { SmoothScroll } from '@/components/site/SmoothScroll';
 import { BotanicalParticles } from '@/components/site/BotanicalParticles';
 import { getPortfolio, getStats, visibleSections } from '@/lib/content';
 import { initials } from '@/lib/format';
-import { SECTION_LABELS, sectionIntro, sectionTitle } from '@/lib/site';
-import type { Portfolio, SectionKey } from '@/lib/types';
+import { SECTION_LABELS, sectionIntro, sectionLabel, sectionTitle } from '@/lib/site';
+import type { Portfolio, SectionKey, SectionSetting } from '@/lib/types';
+import { AchievementsGrid } from '@/components/site/AchievementsGrid';
 
 // Always render with the latest content so admin edits show up immediately.
 export const dynamic = 'force-dynamic';
@@ -37,10 +38,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-function SectionBody({ sectionKey, data }: { sectionKey: SectionKey; data: Portfolio }) {
-  switch (sectionKey) {
+function SectionBody({ section, data }: { section: SectionSetting; data: Portfolio }) {
+  switch (section.key) {
     case 'about':
-      return <About profile={data.profile} education={data.education} skills={data.skills} />;
+      return <About profile={data.profile} education={data.education} skills={data.skills} section={section} />;
     case 'experience':
       return <ExperienceTimeline items={data.experiences.filter((e) => e.kind === 'internship')} />;
     case 'projects':
@@ -60,12 +61,16 @@ function SectionBody({ sectionKey, data }: { sectionKey: SectionKey; data: Portf
       return <SkillsGrid skills={data.skills} />;
     case 'certifications':
       return <CertificationGrid items={data.certifications} />;
+    case 'achievements':
+      return <AchievementsGrid items={section.items} />;
     case 'education':
       return <EducationList items={data.education} />;
     case 'leadership':
       return <LeadershipGrid items={data.experiences.filter((e) => e.kind === 'leadership')} />;
     case 'contact':
       return <ContactSection profile={data.profile} />;
+    default:
+      return <AchievementsGrid items={section.items} emptyMessage="Custom module content can be edited in Admin → Sections." />;
   }
 }
 
@@ -82,7 +87,7 @@ export default async function HomePage() {
       <SiteHeader
         name={data.profile.full_name}
         monogram={initials(data.profile.full_name)}
-        links={sections.map((s) => ({ href: `#${s.key}`, label: SECTION_LABELS[s.key] }))}
+        links={sections.map((s) => ({ href: `#${s.key}`, label: sectionLabel(s.key) }))}
         resumeUrl={data.profile.resume_url}
       />
       <main id="top">
@@ -98,11 +103,11 @@ export default async function HomePage() {
             key={section.key}
             id={section.key}
             index={i + 1}
-            label={SECTION_LABELS[section.key]}
+            label={sectionLabel(section.key)}
             title={sectionTitle(section)}
             intro={sectionIntro(section)}
           >
-            <SectionBody sectionKey={section.key} data={data} />
+            <SectionBody section={section} data={data} />
           </Section>
         ))}
       </main>
